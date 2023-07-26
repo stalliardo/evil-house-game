@@ -1,3 +1,4 @@
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -104,4 +105,17 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+.optionButton {
+  font-size: 30px;
+  border: 1px solid red;
+  padding: 10px;
+  /* TODO ff below */
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; 
+ 
+}
+.optionButton:hover {
+  cursor: pointer;
+  border: 1px solid rgb(255, 90, 90);
 }

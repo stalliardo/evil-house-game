@@ -1,0 +1,8 @@
+.button {
+    /* flex-direction: ; */
+    
+    padding: 10px;
+    font-size: 30px;
+    background-color: transparent;
+    background: none;
+}

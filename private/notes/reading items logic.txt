@@ -1,0 +1,1 @@
+Whena  player clicks read whats the best way to handle this

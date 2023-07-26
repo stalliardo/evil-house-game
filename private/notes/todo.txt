@@ -1,0 +1,13 @@
+-  Fix the function so that i can select the required sprites better
+- flip the image if the chacter is walking let / right
+- add the idle image for when no button pressed
+
+/////////////////////////////////////////////////// interaction logic ///////////////////////////////////////////////////
+
+- close the interaction diplay when a chacacter moves out of the zone - DONE
+- handle interaction options
+    - need a read function
+    - need a take item(to inventory) function
+    - When a user has added something to the inventory there is no live record of this so going back to the prompt displayes the same message ie take the "paper clip" - DONE
+    = Remove the buttons on add
+    - also once the item has been taken the button either needs to be disabled or hidden or the item is continously added to the localstorage
