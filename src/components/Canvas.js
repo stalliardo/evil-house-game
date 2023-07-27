@@ -327,17 +327,6 @@ const Canvas = ({ ...props }) => {
                                     interactionOptions: ["Take"],
                                     lootables: "basementPaperClip",
                                     type: "staticObject",
-                                    callbacks: [
-                                        {
-                                            type: "Take",
-                                            action: [() => addItemToInventory({ name: "Paper Clip", matrixName: "basementPaperClip" }), "You have taken the paper clip"]
-                                        },
-                                        {
-                                            type: "Leave",
-                                            action: () => "You have decided to leave the paper clip"
-                                        },
-
-                                    ]
                                 },
                                 spriteSheetCoords: {
                                     row: 8,

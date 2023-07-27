@@ -27,6 +27,7 @@ const GameDataDisplay = ({ ...props }) => {
 
                 addItemToInventory({ name, matrixName });
                 setAdditionalText(boundaryInstance.interactionData.lootedText);
+                boundaryInstance.text = ITEMS_ACTIONS_MATRIX[boundaryInstance.interactionData.lootables].pickedUpText;
 
                 break;
             case "Read":
