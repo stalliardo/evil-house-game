@@ -5,19 +5,18 @@ import { useMemo, useRef, useState } from "react";
 
 export default function Home() {
 
-  const [interactionData, setInteractionData] = useState(null);
   const [showGameDataDisplay, setShowGameDataDisplay] = useState(false);
   const [showInventory, setShowInventory] = useState(false);
   const [boundaryInstance, setBoundaryInstance] = useState(null);
 
-  const handleInteraction = (boundary) => { // Boundary instance
+  const handleInteraction = (interactedBoundary) => { // Boundary instance
     setShowGameDataDisplay(true);
-    setInteractionData(boundary.interactionData);
+    setBoundaryInstance(interactedBoundary)
   }
 
   const closeInteractionDisplay = () => {
     setShowGameDataDisplay(false);
-    setInteractionData(null);
+    setBoundaryInstance(null);
   }
 
   const onShowInventory = (interactedBoundary = null) => {
@@ -43,7 +42,7 @@ export default function Home() {
       margin: "60px auto"
     }}>
       {canvas}
-      <GameDataDisplay title="Level 1 - The Basement" interactionData={interactionData} showGameDataDisplay={showGameDataDisplay} showInventory={showInventory} boundaryInstance={boundaryInstance} closeInventory={closeInventory}/>
+      <GameDataDisplay title="Level 1 - The Basement" showGameDataDisplay={showGameDataDisplay} showInventory={showInventory} boundaryInstance={boundaryInstance} closeInventory={closeInventory}/>
     </div>
   )
 }

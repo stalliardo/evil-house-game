@@ -7,7 +7,8 @@ const ITEMS_ACTIONS_MATRIX = {
         examine:() => "A flat wire clip shaped so that it can hold sheets of paper between two of its loops. Maybe it has another use.",
         interactsWith: "basement_locked_locker",
         useageType: "key",
-        doorUnlockedText: BASEMENT_NOTES.LOCKER_UNLOCKED
+        doorUnlockedText: BASEMENT_NOTES.LOCKER_UNLOCKED,
+        name: "Paper Clip"
     }
 }
 

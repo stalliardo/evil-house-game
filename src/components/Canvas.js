@@ -15,8 +15,6 @@ const Canvas = ({ ...props }) => {
     const canvas = useRef();
     const [ctx, setCtx] = useState(null);
 
-
-
     useEffect(() => {
         if (canvas.current) {
             setCtx(canvas.current.getContext("2d"));
@@ -27,10 +25,6 @@ const Canvas = ({ ...props }) => {
     }, [])
 
     if (ctx !== null) {
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
         const keys = {
             w: {
                 pressed: false
@@ -51,30 +45,13 @@ const Canvas = ({ ...props }) => {
 
         let lastKey = "";
 
-        // Spawn the plaer in the bottom right corner
-        // const player = new Player({ position: { x: 80, y: Boundary.height * map.length - Boundary.height * 3 }, velocity: { x: 0, y: 0 }, ctx, spriteSheetCoords: {row: 2, column: 1} })
-
-        // const stairsText = new CanvasText("Stairs", "24px Arial", "red", 48, 100, ctx);
-
-        // const b = new Boundary({position: {x: 10, y: 10,}, ctx: ctx});
-        // b.draw()
-
         const boundaries = [];
         let playerIsAtInteractableBoundary = false;
 
-        ///// tile Extraction from dungeonTileset.png
         const spriteSheet = new Image();
         spriteSheet.src = "dungeonTileset.png"
 
-        // player animation
         const player = new SpriteAnimation('allCharacters.png', 7, 4, 1, 2, { x: 200, y: 100 }, { x: 0, y: 0 }, ctx);
-
-        // function drawTile(x, y) {
-
-        // }
-
-        //  .log("tileWidth = ", tileWidth);
-
 
         map.forEach((row, i) => {
             row.forEach((symbol, j) => {
@@ -151,7 +128,7 @@ const Canvas = ({ ...props }) => {
                                     textOptions: [BASEMENT_NOTES.LOCKER_LOCKED, BASEMENT_NOTES.LOCKER_UNLOCKED, BASEMENT_NOTES.LOCKER_LOOTED],
                                     interactionOptions: [],
                                     // need an array of things that can be looted
-                                    lootables: "Basement Key",
+                                    lootables: "basementKey",
                                     callbacks: [
                                         {
                                             type: "Take",
@@ -184,6 +161,7 @@ const Canvas = ({ ...props }) => {
                                 interactionData: {
                                     boundaryType: BOUNDARY_TYPES.lOCKER,
                                     text: BASEMENT_NOTES.LOCKER_WITH_SHIRT,
+                                    textOptions: [BASEMENT_NOTES.LOCKER_WITH_SHIRT, BASEMENT_NOTES.NOTE_1],
                                     interactionOptions: ["Read"],
                                     callbacks: [
                                         {
@@ -344,9 +322,11 @@ const Canvas = ({ ...props }) => {
                                 ctx,
                                 interactionData: {
                                     boundaryType: BOUNDARY_TYPES.TABLE,
-                                    text: [BASEMENT_NOTES.TABLE_TEXT_HAS_CLIP_IN_INV, BASEMENT_NOTES.TABLE_TEXT, "Paper Clip"],
+                                    textOptions: [BASEMENT_NOTES.TABLE_TEXT, BASEMENT_NOTES.TABLE_TEXT_HAS_CLIP_IN_INV, BASEMENT_NOTES],
+                                    lootedText: "You've taken the paper clip",
                                     interactionOptions: ["Take"],
-                                    lootables: "Paper Clip",
+                                    lootables: "basementPaperClip",
+                                    type: "staticObject",
                                     callbacks: [
                                         {
                                             type: "Take",
@@ -401,12 +381,9 @@ const Canvas = ({ ...props }) => {
 
         let interactedBoundary;
         function isObjectCollision(boundary) {
-
-            // Check if the boundaryType is an iteractable boundary
             if (Object.values(BOUNDARY_TYPES).includes(boundary.interactionData.boundaryType)) {
                 playerIsAtInteractableBoundary = true;
                 interactedBoundary = boundary;
-
             }
         }
 
@@ -417,11 +394,6 @@ const Canvas = ({ ...props }) => {
 
         function animate() { // creates the animation loop
             requestAnimationFrame(animate);
-
-
-
-            // player animation / not currently in use
-            // player.updateFrame();
 
             ctx.clearRect(0, 0, canvas.current.width, canvas.current.height)
 
@@ -614,8 +586,6 @@ const Canvas = ({ ...props }) => {
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
-
-
 
     return (
         <div style={{ width: "fit-content" }}>
