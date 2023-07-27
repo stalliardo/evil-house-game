@@ -1,3 +1,5 @@
+import { ITEMS_ACTIONS_MATRIX } from "./itemActionsMatrix";
+
 // Sample data structure for an inventory item
 const item = {
     name: 'Letter',
@@ -17,7 +19,6 @@ export function addItemToInventory(item) {
     const inventory = getInventory();
     inventory.push(item);
     saveInventory(inventory);
-    console.log(`${item.name} added successfully`);
 }
 
 // Function to save the updated inventory
@@ -33,10 +34,11 @@ export function removeItemFromInventory(itemName) {
     saveInventory(updatedInventory);
 }
 export function isItemInInventory(itemName) {
-    console.log("\n\nIs item in inv called");
     const inventory = getInventory(); 
     return inventory.some((item) => item.name === itemName);
   }
   
-
+export function getMatrixDataForItem(matrixName) {
+    return ITEMS_ACTIONS_MATRIX[matrixName];
+}
 

@@ -328,12 +328,12 @@ const Canvas = ({ ...props }) => {
                                     ctx,
                                     interactionData: {
                                         boundaryType: BOUNDARY_TYPES.TABLE,
-                                        text: [BASEMENT_NOTES.TABLE_TEXT_HAS_CLIP_IN_INV, BASEMENT_NOTES.TABLE_TEXT, "paper clip"],
+                                        text: [BASEMENT_NOTES.TABLE_TEXT_HAS_CLIP_IN_INV, BASEMENT_NOTES.TABLE_TEXT, "Paper Clip"],
                                         interactionOptions: ["Take", "Leave"],
                                         callbacks: [
                                             {
                                                 type: "Take",
-                                                action: [() => addItemToInventory({name: "paper clip"}), "You have taken the paper clip"]
+                                                action: [() => addItemToInventory({name: "Paper Clip", matrixName: "basementPaperClip"}), "You have taken the paper clip"]
                                             },
                                             {
                                                 type: "Leave",

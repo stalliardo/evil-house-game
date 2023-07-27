@@ -1,0 +1,45 @@
+.container {
+    padding: 10px;
+    background-color: rgb(32, 32, 32);
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.title{
+    text-align: center;
+}
+
+.item {
+    color: rgb(151, 190, 151);
+    text-decoration: none;
+    list-style-type: none;
+    font-size: 20px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid green;
+}
+
+.item:hover {
+    cursor: pointer;
+    color: rgb(46, 192, 46);
+}
+
+.drawer {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px;
+}
+
+.drawerItem {
+    color: white;
+    border: 1px solid white;
+    padding: 4px;
+}
+
+.drawerItem:hover {
+    cursor: pointer;
+}
+
+.textDrawer {
+    padding: 10px;
+    color: rgb(151, 190, 151);
+}
