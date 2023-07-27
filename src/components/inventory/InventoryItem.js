@@ -15,7 +15,6 @@ const InventoryItem = ({ ...props }) => {
     }
 
     const examineSelected = () => {
-        setShowTextDrawer((prev) => !prev);
         setTextDrawerText(itemMatrixData.examine());
     }
 
@@ -24,14 +23,19 @@ const InventoryItem = ({ ...props }) => {
         <div>
             <div className={styles.item} onClick={toggleDrawerIsOpen}>{props.item.name}</div>
             {drawerIsOpen &&
-                // div that holds coth drawers
                 <div>
                     <div className={styles.drawer}>
                         {itemMatrixData.actions.map((action, index) => (
-                            <InventoryActionButton key={index} action={action} itemMatrixData={itemMatrixData} examineSelected={examineSelected}/>
+                            <InventoryActionButton
+                                key={index} 
+                                action={action} 
+                                itemMatrixData={itemMatrixData} 
+                                examineSelected={examineSelected} 
+                                boundaryInstance={props.boundaryInstance}
+                                closeInventory={props.closeInventory}
+                            />
                         ))}
                     </div>
-
                     {
                         textDrawerText &&
                         <div className={styles.textDrawer}>

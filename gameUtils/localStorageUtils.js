@@ -35,10 +35,21 @@ export function removeItemFromInventory(itemName) {
 }
 export function isItemInInventory(itemName) {
     const inventory = getInventory(); 
-    return inventory.some((item) => item.name === itemName);
+    // return inventory.some((item) => item.name === itemName);
+    return inventory.find((item) => item.name === itemName);
   }
   
 export function getMatrixDataForItem(matrixName) {
     return ITEMS_ACTIONS_MATRIX[matrixName];
 }
 
+// Function to update an item in the inventory
+export function updateItemInInventory(updatedItem) {
+    const inventory = getInventory();
+    
+    const updatedInventory = inventory.map((item) =>
+      item.name === updatedItem.name ? { ...item, ...updatedItem } : item
+    );
+    saveInventory(updatedInventory);
+  }
+  

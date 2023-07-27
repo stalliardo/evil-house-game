@@ -13,10 +13,9 @@ const GameDataDisplay = ({ ...props }) => {
         setAdditionalText("");
     }, [props.showGameDataDisplay])
 
-    // Display a heading if provided  
     const { interactionData } = props;
     const [additionalText, setAdditionalText] = useState("");
-    const [showInventory, seShowInventory] = useState(true); // TODO hanhe to false
+    const {showInventory} = props;
 
     const optionsSelected = (option) => {
 
@@ -35,26 +34,23 @@ const GameDataDisplay = ({ ...props }) => {
         }
     }
 
-
     return (
         <div style={styles2}>
             <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{props?.title}</h1>
-            {
-                props.showGameDataDisplay &&
                 <div style={{ border: "1px solid blue", display: "flex" }}>
+                    {
+                        showInventory &&
+                        <div style={{ marginRight: "20px", border: "1px solid red", width: "50%" }}>
+                            <Inventory boundaryInstance={props.boundaryInstance} closeInventory={props.closeInventory}/>
+                        </div>
+                    }
 
-                    {/* Inventor container */}
-                    <div style={{marginRight: "20px", border: "1px solid red", width: "50%"}}>
-                        <Inventory />
-
-                    </div>
-
-                    {/* game txt and actions container */}
-                    <div style={{marginRight: "20px", width: showInventory ? "40%" : "100%"}}>
+            { props.showGameDataDisplay &&
+                    <div style={{ marginRight: "20px", width: showInventory ? "40%" : "100%" }}>
                         <p style={{ fontSize: "30px", marginTop: "30px" }} id="description" className={eduSABegginer.className}>{conditionalText(interactionData?.text)}</p>
 
                         {
-                            showConditionalButtons(interactionData?.text) ? <div className={styles.optionsContainer}>
+                            showConditionalButtons(interactionData?.lootables) ? <div className={styles.optionsContainer}>
                                 {
                                     // only want to run this if the conditional returns
                                     interactionData?.interactionOptions?.map((option, index) => (
@@ -65,10 +61,8 @@ const GameDataDisplay = ({ ...props }) => {
                         }
                         <p style={{ fontSize: "30px", marginTop: "30px", color: "lightgreen" }} className={eduSABegginer.className}>{additionalText}</p>
                     </div>
-                    
+                }
                 </div>
-            }
-
         </div>
     )
 }

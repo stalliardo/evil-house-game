@@ -11,13 +11,19 @@ export function conditionalText(conditionalData){
     }
 }
 
-export function showConditionalButtons(conditionalData){
+export function showConditionalButtons(lootedItem){
     // if the length is 3 then this is a conditional instance
 
-    if(conditionalData.length === 3) {
-        // if the the item is not in the inventory, show the prompt buttons ie "Take", "Leave"
-        return !isItemInInventory(conditionalData[2]);
-    }
+    console.log("looted item = ", lootedItem);
+
+    return !isItemInInventory(lootedItem);
+
+    
+
+    // if(conditionalData.length === 3) {
+    //     // if the the item is not in the inventory, show the prompt buttons ie "Take", "Leave"
+    //     return !isItemInInventory(conditionalData[2]);
+    // }
 
     return true;
 }
