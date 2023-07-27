@@ -27,12 +27,12 @@ export function removeItemFromInventory(itemName) {
     const updatedInventory = inventory.filter((item) => item.name !== itemName);
     saveInventory(updatedInventory);
 }
-export function isItemInInventory(itemName) {
+export function getItemFromInventory(itemName) {
     const inventory = getInventory();
     return inventory.find((item) => item.name === itemName);
 }
 
-export function isMatrixNamePresent(matrixName) {
+export function getItemViaMatrixName(matrixName) {
     const inventory = getInventory();
     return inventory.find((item) => item.matrixName === matrixName);
 }

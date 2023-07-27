@@ -1,11 +1,11 @@
 
-import { isItemInInventory, isMatrixNamePresent } from "../../gameUtils/localStorageUtils";
+import { getItemFromInventory, getItemViaMatrixName } from "../../gameUtils/localStorageUtils";
 
 export default class Boundary {
     static width = 32;
     static height = 32;
 
-    constructor({ position, ctx, colour, spriteSheetCoords = { row: 0, column: 0 }, interactionData = { boundaryType: "" }, id, type }) {
+    constructor({ position, ctx, colour, spriteSheetCoords = { row: 0, column: 0 }, interactionData = { boundaryType: "" }, id, type, name }) {
         this.position = position;
         this.width = 32;
         this.height = 32;
@@ -15,13 +15,14 @@ export default class Boundary {
         this.spriteSheetCoords = spriteSheetCoords;
         this.id = id;
         this.type = type;
+        this.name = name;
 
         this.setInteractionText();
     }
 
     setInteractionText() {
         if (this.id) {
-            const item = isItemInInventory(this.id);
+            const item = getItemFromInventory(this.id);
             if(this.type === "lockedContainer") {
                 if (item && item.value === "unlocked") { // item found now hanlde the text
                     this.text = this.interactionData.textOptions[1];
@@ -34,7 +35,7 @@ export default class Boundary {
                 }
             } 
         } else if(this.interactionData.lootables) {
-            const item = isMatrixNamePresent(this.interactionData.lootables);
+            const item = getItemViaMatrixName(this.interactionData.lootables);
 
             if(item) {
                 this.text = this.interactionData.textOptions[1]

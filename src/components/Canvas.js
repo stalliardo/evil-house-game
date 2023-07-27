@@ -9,7 +9,7 @@ import Prompt from "@/classes/Prompt";
 import { BOUNDARY_TYPES } from "../../gameUtils/consts";
 import SpriteAnimation from "@/classes/SpriteAnimation";
 import { BASEMENT_NOTES } from "../../gameUtils/gameTextConsts";
-import { addItemToInventory, isItemInInventory, updateItemInInventory } from "../../gameUtils/localStorageUtils";
+import { addItemToInventory, getItemFromInventory, updateItemInInventory } from "../../gameUtils/localStorageUtils";
 
 const Canvas = ({ ...props }) => {
     const canvas = useRef();
@@ -122,27 +122,15 @@ const Canvas = ({ ...props }) => {
                                     y: Boundary.height * i
                                 },
                                 ctx,
+                                name: "basement_lockedLocker",
                                 interactionData: {
                                     boundaryType: BOUNDARY_TYPES.lOCKER,
-                                    // conditional text based on wheter the user has picked up the key
                                     textOptions: [BASEMENT_NOTES.LOCKER_LOCKED, BASEMENT_NOTES.LOCKER_UNLOCKED, BASEMENT_NOTES.LOCKER_LOOTED],
-                                    interactionOptions: [],
-                                    // need an array of things that can be looted
+                                    interactionOptions: ["Take"],
                                     lootables: "basementKey",
-                                    callbacks: [
-                                        {
-                                            type: "Take",
-                                            action: [() => {
-                                                addItemToInventory({ name: "Basement Key", matrixName: "basementKey" });
-                                                updateItemInInventory({name: "basement_locked_locker", value: "looted" });
+                                    type: "lockedContainer",
 
-                                            }, "You have taken the basement key"]
-                                        },
-                                    ]
-
-                                },
-                                id: "basement_locked_locker",
-                                type: "lockedContainer",
+                                },                            
                                 spriteSheetCoords: {
                                     row: 8,
                                     column: 5
@@ -158,17 +146,14 @@ const Canvas = ({ ...props }) => {
                                     y: Boundary.height * i
                                 },
                                 ctx,
+                                name: "basement_openLocker",
                                 interactionData: {
                                     boundaryType: BOUNDARY_TYPES.lOCKER,
-                                    text: BASEMENT_NOTES.LOCKER_WITH_SHIRT,
+                                    // text: BASEMEwNT_NOTES.LOCKER_WITH_SHIRT,
                                     textOptions: [BASEMENT_NOTES.LOCKER_WITH_SHIRT, BASEMENT_NOTES.NOTE_1],
                                     interactionOptions: ["Read"],
-                                    callbacks: [
-                                        {
-                                            type: "Read",
-                                            action: () => BASEMENT_NOTES.NOTE_1
-                                        }
-                                    ]
+                                    type: "staticObject",
+                                    
                                 },
                                 spriteSheetCoords: {
                                     row: 8,
@@ -319,13 +304,13 @@ const Canvas = ({ ...props }) => {
                                     x: Boundary.width * j,
                                     y: Boundary.height * i
                                 },
+                                name: "basement_paperClip",
                                 ctx,
                                 interactionData: {
                                     boundaryType: BOUNDARY_TYPES.TABLE,
-                                    textOptions: [BASEMENT_NOTES.TABLE_TEXT, BASEMENT_NOTES.TABLE_TEXT_HAS_CLIP_IN_INV, BASEMENT_NOTES],
-                                    lootedText: "You've taken the paper clip",
+                                    textOptions: [BASEMENT_NOTES.TABLE_TEXT, BASEMENT_NOTES.TABLE_TEXT_HAS_CLIP_IN_INV],
                                     interactionOptions: ["Take"],
-                                    lootables: "basementPaperClip",
+                                    lootables: "basement_paperClip",
                                     type: "staticObject",
                                 },
                                 spriteSheetCoords: {
