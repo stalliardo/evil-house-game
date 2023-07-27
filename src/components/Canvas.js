@@ -73,7 +73,7 @@ const Canvas = ({ ...props }) => {
 
         // }
 
-        // console.log("tileWidth = ", tileWidth);
+        //  .log("tileWidth = ", tileWidth);
 
 
         map.forEach((row, i) => {
