@@ -10,6 +10,8 @@ import { BOUNDARY_TYPES } from "../../gameUtils/consts";
 import SpriteAnimation from "@/classes/SpriteAnimation";
 import { BASEMENT_NOTES } from "../../gameUtils/gameTextConsts";
 import { addItemToInventory, getItemFromInventory, updateItemInInventory } from "../../gameUtils/localStorageUtils";
+import Table from "@/classes/Table";
+import Locker from "@/classes/Locker";
 
 const Canvas = ({ ...props }) => {
     const canvas = useRef();
@@ -116,50 +118,34 @@ const Canvas = ({ ...props }) => {
                         break;
                     case "locker1":
                         boundaries.push(
-                            new Boundary({
-                                position: {
+                            new Locker(
+                                {
                                     x: Boundary.width * j,
                                     y: Boundary.height * i
                                 },
-                                ctx,
-                                name: "basement_lockedLocker",
-                                interactionData: {
-                                    boundaryType: BOUNDARY_TYPES.lOCKER,
-                                    textOptions: [BASEMENT_NOTES.LOCKER_LOCKED, BASEMENT_NOTES.LOCKER_UNLOCKED, BASEMENT_NOTES.LOCKER_LOOTED],
-                                    interactionOptions: ["Take"],
-                                    lootables: "basementKey",
-                                    type: "lockedContainer",
-
-                                },                            
-                                spriteSheetCoords: {
-                                    row: 8,
-                                    column: 5
-                                }
-                            })
+                            
+                            "lockerLockedWithPadLock",
+                            "basement", 
+                            {
+                                row: 8,
+                                column: 5
+                            }, ctx, true)
                         )
                         break;
                     case "locker2":
                         boundaries.push(
-                            new Boundary({
-                                position: {
+                            new Locker(
+                                {
                                     x: Boundary.width * j,
                                     y: Boundary.height * i
                                 },
-                                ctx,
-                                name: "basement_openLocker",
-                                interactionData: {
-                                    boundaryType: BOUNDARY_TYPES.lOCKER,
-                                    // text: BASEMEwNT_NOTES.LOCKER_WITH_SHIRT,
-                                    textOptions: [BASEMENT_NOTES.LOCKER_WITH_SHIRT, BASEMENT_NOTES.NOTE_1],
-                                    interactionOptions: ["Read"],
-                                    type: "staticObject",
-                                    
-                                },
-                                spriteSheetCoords: {
-                                    row: 8,
-                                    column: 5
-                                }
-                            })
+                            
+                            "lockerWithNoteInShirt",
+                            "basement", 
+                            {
+                                row: 8,
+                                column: 5
+                            }, ctx, false)
                         )
                         break;
                     case "1":
@@ -299,27 +285,36 @@ const Canvas = ({ ...props }) => {
                         break;
                     case "t":
                         boundaries.push(
-                            new Boundary({
-                                position: {
+                            new Table(
+                                {
                                     x: Boundary.width * j,
                                     y: Boundary.height * i
                                 },
-                                name: "basement_paperClip",
-                                ctx,
-                                interactionData: {
-                                    boundaryType: BOUNDARY_TYPES.TABLE,
-                                    textOptions: [BASEMENT_NOTES.TABLE_TEXT, BASEMENT_NOTES.TABLE_TEXT_HAS_CLIP_IN_INV],
-                                    interactionOptions: ["Take"],
-                                    lootables: "basement_paperClip",
-                                    type: "staticObject",
-                                },
-                                spriteSheetCoords: {
-                                    row: 8,
-                                    column: 3
-                                }
-                            })
+                            
+                            "paperClipOnTable",
+                            "basement", 
+                            {
+                                row: 8,
+                                column: 3
+                            }, ctx)
                         )
                         break;
+                    // case "newTable":
+                    //     boundaries.push(
+                    //         new Table(
+                    //             {
+                    //                 x: Boundary.width * j,
+                    //                 y: Boundary.height * i
+                    //             },
+                            
+                    //         "paperClipOnTable",
+                    //         "basement", 
+                    //         {
+                    //             row: 8,
+                    //             column: 3
+                    //         }, ctx)
+                    //     )
+                    //     break;
 
                     default:
                     // boundaries.push(
@@ -355,7 +350,11 @@ const Canvas = ({ ...props }) => {
 
         let interactedBoundary;
         function isObjectCollision(boundary) {
-            if (Object.values(BOUNDARY_TYPES).includes(boundary.interactionData.boundaryType)) {
+            // if (Object.values(BOUNDARY_TYPES).includes(boundary.interactionData.boundaryType)) {
+            //     playerIsAtInteractableBoundary = true;
+            //     interactedBoundary = boundary;
+            // }
+            if (boundary.isInteractable) {
                 playerIsAtInteractableBoundary = true;
                 interactedBoundary = boundary;
             }
@@ -365,6 +364,15 @@ const Canvas = ({ ...props }) => {
             playerIsAtInteractableBoundary = false;
             interactedBoundary = null;
         }
+
+        // boundaries.forEach((b) => {
+        //     // console.log("boundary = ", b);
+        //     if(b.isInteractable){
+        //         console.log("This can interact");
+        //         b.textFunc()
+        //     }
+        // })
+
 
         function animate() { // creates the animation loop
             requestAnimationFrame(animate);

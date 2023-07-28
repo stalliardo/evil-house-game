@@ -6,68 +6,83 @@ import { conditionalText, showConditionalButtons } from '../../gameUtils/gameDis
 import Inventory from './inventory/Inventory';
 import { addItemToInventory, updateItemInInventory } from '../../gameUtils/localStorageUtils';
 import { ITEMS_ACTIONS_MATRIX } from '../../gameUtils/itemActionsMatrix';
+import DialogueManager from '@/classes/DialogueManager';
 
 const styles2 = { width: "800px", height: "100%" };
 
 const GameDataDisplay = ({ ...props }) => {
-    useEffect(() => {
-        setAdditionalText("");
-    }, [props.showGameDataDisplay])
-
     const { boundaryInstance } = props;
     const [additionalText, setAdditionalText] = useState("");
     const { showInventory } = props;
+    const dialogueManager = new DialogueManager();
+    const [textOptions, setTextOptions] = useState([]);
 
-    const matrixName = boundaryInstance?.name;
+    useEffect(() => {
+        setAdditionalText("");
+
+        // const dialogueOptions = boundaryInstance?.loadDialogueDataForLevel(boundaryInstance.level);
+        const dialogueOptions = dialogueManager.loadDialogueDataForLevel(boundaryInstance?.level, boundaryInstance?.dialogueIdentifier);
+
+        setTextOptions(dialogueOptions)
+
+    }, [props.showGameDataDisplay])
+
+
 
     const optionsSelected = (option) => {
+        console.log("option selceted = ", option.text);
 
-        switch (option) {
-            case "Take":
-                const name = ITEMS_ACTIONS_MATRIX[matrixName].name  || ITEMS_ACTIONS_MATRIX[boundaryInstance.interactionData.lootables].name;
-                let mName = boundaryInstance.interactionData.lootables;
+        //determine what option was selected, then handle the function call on either the instance or locally
+        switch (option.action) {
+            case "readItem": {
+                console.log("read called + dialogueData = ", option);
+                setAdditionalText(option.response);
+                // get the
+                break;
+            }
+            case "leaveItem": {
+                console.log("read called + dialogueData = ", option);
+                setAdditionalText(option.response);
+                // get the
+                break;
+            }
+            case "takeItem": {
+                console.log("read called + dialogueData = ", option);
+                setAdditionalText(option.response);
+                boundaryInstance[option.action](textOptions.lootableItem);
+                
+                break;
+            }
 
-                if(ITEMS_ACTIONS_MATRIX[matrixName].requiresKey) {
-                    updateItemInInventory({name: boundaryInstance.name, value: "looted"});
-                }
-                
-                addItemToInventory({ name, matrixName: mName });
-                setAdditionalText(ITEMS_ACTIONS_MATRIX[matrixName].lootedText);
-                
-                // close buttons
-                break;
-            case "Read":
-                const text = boundaryInstance.getDisplayText();
-                setAdditionalText(text);
-                break;
         }
+
+        // now what? fire that action on the instance
+        
+
+
     }
 
     return (
+
         <div style={styles2}>
             <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{props?.title}</h1>
             <div style={{ border: "1px solid blue", display: "flex" }}>
                 {
                     showInventory &&
                     <div style={{ marginRight: "20px", border: "1px solid red", width: "50%" }}>
-                        <Inventory boundaryInstance={props.boundaryInstance} closeInventory={props.closeInventory} />
+                        <Inventory boundaryInstance={boundaryInstance} closeInventory={props.closeInventory} />
                     </div>
                 }
 
                 {props.showGameDataDisplay &&
                     <div style={{ marginRight: "20px", width: showInventory ? "40%" : "100%" }}>
-                        {/* <p style={{ fontSize: "30px", marginTop: "30px" }} id="description" className={eduSABegginer.className}>{boundaryInstance.text}</p> */}
-                        <p style={{ fontSize: "30px", marginTop: "30px" }} id="description" className={eduSABegginer.className}>{ITEMS_ACTIONS_MATRIX[matrixName].text(boundaryInstance.interactionData.type, boundaryInstance.interactionData.textOptions, matrixName)}</p>
+                        <p style={{ fontSize: "30px", marginTop: "30px" }} id="description" className={eduSABegginer.className}>{textOptions?.question || textOptions}</p>
+                        {/* <p style={{ fontSize: "30px", marginTop: "30px" }} id="description" className={eduSABegginer.className}>{ITEMS_ACTIONS_MATRIX[matrixName].text(boundaryInstance.interactionData.type, boundaryInstance.interactionData.textOptions, matrixName)}</p> */}
 
                         {
-                            showConditionalButtons(ITEMS_ACTIONS_MATRIX[matrixName], matrixName, ITEMS_ACTIONS_MATRIX[matrixName].name) ? <div className={styles.optionsContainer}>
-                                {
-                                    // only want to run this if the conditional returns
-                                    boundaryInstance.interactionData?.interactionOptions?.map((option, index) => (
-                                        <InteractableOptionItem text={option} key={index} optionsSelected={optionsSelected} />
-                                    ))
-                                }
-                            </div> : null
+                            textOptions?.options?.map((option, index) => (
+                                <InteractableOptionItem option={option} key={index} optionsSelected={optionsSelected} />
+                            ))
                         }
                         <p style={{ fontSize: "30px", marginTop: "30px", color: "lightgreen" }} className={eduSABegginer.className}>{additionalText}</p>
                     </div>
