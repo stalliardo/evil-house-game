@@ -32,21 +32,28 @@ export default class DialogueManager {
       console.log("\ndialogue data for the locked container = ", dialogueData);
 
       // hasITem checks if the user already has the lootedable item...
-      const hasItem = this.gameStateManager.has(dialogueData.lootableItem);
-      const hasKey = this.gameStateManager.has(dialogueData.keyRequired);
+      const hasItem = this.gameStateManager.hasItem(dialogueData.lootableItem);
+      const hasKey = this.gameStateManager.hasItem(dialogueData.keyRequired);
+
+
+      console.log("hasItem = ", hasItem);
+      console.log("hasKeyRequired = ", hasKey);
+
 
       // if they do then they have already looted this so return the lootedText
       if(hasItem){
         return dialogueData.alreadyTakenResponse;
       } else if(hasKey){
+        return {question: dialogueData.questionWithKey, options: dialogueData.options, lootableItem: dialogueData.lootableItem, keyRequired: dialogueData.keyRequired}
         // return dialogueData
       } else {
         // has neither key or item
+        console.log("%celse called", "color:red");
+        // no item or key so return the questionWithoutKey
+        return {question: dialogueData.questionWithoutKey};
 
       }
 
-      console.log("hasItem = ", hasItem);
-      console.log("hasKeyRequired = ", hasKey);
     }
 
     if(("lootableItem" in dialogueData) && !("keyRequired" in dialogueData)){

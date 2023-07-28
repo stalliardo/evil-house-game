@@ -15,6 +15,7 @@ export default class GameStateManager {
     }
   
     set(key, value) {
+      console.log("set called");
       this.gameState[key] = value;
       this.saveToLocalStorage();
     }

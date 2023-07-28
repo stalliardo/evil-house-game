@@ -16,13 +16,16 @@ export const BASEMENT_DIALOGUE_DATA = {
     lockerLockedWithPadLock: {
         lootableItem: "basementKey",
         keyRequired: "paperClip",
+        
+        questionWithoutKey: "You can't get into the locker. A small, cheap padlock is stopping you.",
 
-        question: "You can't get into the locker. A small, cheap padlock is stopping you. What will you do? ",
+        questionWithKey: "You can't get into the locker. A small, cheap padlock is stopping you. What will you do? ",
         options: [
             {
                 text: "Use paper clip", action: "useItem", response: "You have used the paper clip to unlock the locker."
             },
         ],
+
         itemOpenedQuestion: "There is a basement key hanging inside. What will you do?",
         itemOpenedOptions: [
             {

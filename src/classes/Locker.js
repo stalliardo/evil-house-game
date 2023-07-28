@@ -38,10 +38,14 @@ export default class Locker extends Interaction {
     }
       
       useItem(item) {
-        console.log("use item cllaed from locked");
+        console.log("use item cllaed from locked + item = ", item);
         switch(item){
             case "paperClip": 
                 console.log("useItem on locked called, this can act as a callback to load the next text item");
+                // item used ie key now need to return some addtionaltext
+                // now need to set the state of the door to locked and or / looted
+                this.gameStateManager.set("locker", "unlocked");
+                // now refresh the UI to show the new mssage TODO
                 break;
         }
       }

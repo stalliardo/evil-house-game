@@ -30,7 +30,7 @@ const GameDataDisplay = ({ ...props }) => {
 
 
     const optionsSelected = (option) => {
-        console.log("option selceted = ", option.text);
+        console.log("option selceted = ", option.action);
 
         //determine what option was selected, then handle the function call on either the instance or locally
         switch (option.action) {
@@ -41,15 +41,22 @@ const GameDataDisplay = ({ ...props }) => {
                 break;
             }
             case "leaveItem": {
-                console.log("read called + dialogueData = ", option);
+                console.log("leave called + dialogueData = ", option);
                 setAdditionalText(option.response);
                 // get the
                 break;
             }
             case "takeItem": {
-                console.log("read called + dialogueData = ", option);
+                console.log("take called + dialogueData = ", option);
                 setAdditionalText(option.response);
                 boundaryInstance[option.action](textOptions.lootableItem);
+                
+                break;
+            }
+            case "useItem": {
+                console.log("use called + dialogueData = ", option);
+                setAdditionalText(option.response);
+                boundaryInstance[option.action](textOptions.keyRequired);
                 
                 break;
             }
