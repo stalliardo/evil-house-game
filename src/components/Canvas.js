@@ -9,13 +9,11 @@ import Prompt from "@/classes/Prompt";
 import { BOUNDARY_TYPES } from "../../gameUtils/consts";
 import SpriteAnimation from "@/classes/SpriteAnimation";
 import { BASEMENT_NOTES } from "../../gameUtils/gameTextConsts";
-import { addItemToInventory, isItemInInventory } from "../../gameUtils/localStorageUtils";
+import { addItemToInventory, getItemFromInventory, updateItemInInventory } from "../../gameUtils/localStorageUtils";
 
 const Canvas = ({ ...props }) => {
     const canvas = useRef();
     const [ctx, setCtx] = useState(null);
-
-
 
     useEffect(() => {
         if (canvas.current) {
@@ -27,10 +25,6 @@ const Canvas = ({ ...props }) => {
     }, [])
 
     if (ctx !== null) {
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
         const keys = {
             w: {
                 pressed: false
@@ -51,30 +45,13 @@ const Canvas = ({ ...props }) => {
 
         let lastKey = "";
 
-        // Spawn the plaer in the bottom right corner
-        // const player = new Player({ position: { x: 80, y: Boundary.height * map.length - Boundary.height * 3 }, velocity: { x: 0, y: 0 }, ctx, spriteSheetCoords: {row: 2, column: 1} })
-
-        // const stairsText = new CanvasText("Stairs", "24px Arial", "red", 48, 100, ctx);
-
-        // const b = new Boundary({position: {x: 10, y: 10,}, ctx: ctx});
-        // b.draw()
-
         const boundaries = [];
         let playerIsAtInteractableBoundary = false;
 
-        ///// tile Extraction from dungeonTileset.png
         const spriteSheet = new Image();
         spriteSheet.src = "dungeonTileset.png"
 
-        // player animation
         const player = new SpriteAnimation('allCharacters.png', 7, 4, 1, 2, { x: 200, y: 100 }, { x: 0, y: 0 }, ctx);
-
-        // function drawTile(x, y) {
-
-        // }
-
-        //  .log("tileWidth = ", tileWidth);
-
 
         map.forEach((row, i) => {
             row.forEach((symbol, j) => {
@@ -106,7 +83,7 @@ const Canvas = ({ ...props }) => {
                                 ctx,
                                 colour: "red",
                                 interactionData: {
-                                    boundaryType: BOUNDARY_TYPES.lOCKER,
+                                    boundaryType: BOUNDARY_TYPES.LOCKED_DOOR,
                                     text: "The door is locked! Maybe there is a key around here somewhere."
                                 },
                                 spriteSheetCoords: {
@@ -127,7 +104,7 @@ const Canvas = ({ ...props }) => {
                                 ctx,
                                 colour: "red",
                                 interactionData: {
-                                    boundaryType: BOUNDARY_TYPES.lOCKER,
+                                    boundaryType: BOUNDARY_TYPES.LOCKED_DOOR,
                                     text: "The door is locked! Maybe there is a key around here somewhere."
                                 },
                                 spriteSheetCoords: {
@@ -145,11 +122,15 @@ const Canvas = ({ ...props }) => {
                                     y: Boundary.height * i
                                 },
                                 ctx,
+                                name: "basement_lockedLocker",
                                 interactionData: {
                                     boundaryType: BOUNDARY_TYPES.lOCKER,
-                                    // conditional text based on wheter the user has picked up the key
-                                    text: BASEMENT_NOTES.LOCKED_LOCKER_NO_PAPER_CLIP
-                                },
+                                    textOptions: [BASEMENT_NOTES.LOCKER_LOCKED, BASEMENT_NOTES.LOCKER_UNLOCKED, BASEMENT_NOTES.LOCKER_LOOTED],
+                                    interactionOptions: ["Take"],
+                                    lootables: "basementKey",
+                                    type: "lockedContainer",
+
+                                },                            
                                 spriteSheetCoords: {
                                     row: 8,
                                     column: 5
@@ -165,16 +146,14 @@ const Canvas = ({ ...props }) => {
                                     y: Boundary.height * i
                                 },
                                 ctx,
+                                name: "basement_openLocker",
                                 interactionData: {
                                     boundaryType: BOUNDARY_TYPES.lOCKER,
-                                    text: BASEMENT_NOTES.LOCKER_WITH_SHIRT,
+                                    // text: BASEMEwNT_NOTES.LOCKER_WITH_SHIRT,
+                                    textOptions: [BASEMENT_NOTES.LOCKER_WITH_SHIRT, BASEMENT_NOTES.NOTE_1],
                                     interactionOptions: ["Read"],
-                                    callbacks: [
-                                        {
-                                            type: "Read",
-                                            action: () => BASEMENT_NOTES.NOTE_1
-                                        }
-                                    ]
+                                    type: "staticObject",
+                                    
                                 },
                                 spriteSheetCoords: {
                                     row: 8,
@@ -318,37 +297,29 @@ const Canvas = ({ ...props }) => {
                             })
                         )
                         break;
-                        case "t":
-                            boundaries.push(
-                                new Boundary({
-                                    position: {
-                                        x: Boundary.width * j,
-                                        y: Boundary.height * i
-                                    },
-                                    ctx,
-                                    interactionData: {
-                                        boundaryType: BOUNDARY_TYPES.TABLE,
-                                        text: [BASEMENT_NOTES.TABLE_TEXT_HAS_CLIP_IN_INV, BASEMENT_NOTES.TABLE_TEXT, "paper clip"],
-                                        interactionOptions: ["Take", "Leave"],
-                                        callbacks: [
-                                            {
-                                                type: "Take",
-                                                action: [() => addItemToInventory({name: "paper clip"}), "You have taken the paper clip"]
-                                            },
-                                            {
-                                                type: "Leave",
-                                                action: () => "You have decided to leave the paper clip"
-                                            },
-
-                                        ]
-                                    },
-                                    spriteSheetCoords: {
-                                        row: 8,
-                                        column: 3
-                                    }
-                                })
-                            )
-                            break;
+                    case "t":
+                        boundaries.push(
+                            new Boundary({
+                                position: {
+                                    x: Boundary.width * j,
+                                    y: Boundary.height * i
+                                },
+                                name: "basement_paperClip",
+                                ctx,
+                                interactionData: {
+                                    boundaryType: BOUNDARY_TYPES.TABLE,
+                                    textOptions: [BASEMENT_NOTES.TABLE_TEXT, BASEMENT_NOTES.TABLE_TEXT_HAS_CLIP_IN_INV],
+                                    interactionOptions: ["Take"],
+                                    lootables: "basement_paperClip",
+                                    type: "staticObject",
+                                },
+                                spriteSheetCoords: {
+                                    row: 8,
+                                    column: 3
+                                }
+                            })
+                        )
+                        break;
 
                     default:
                     // boundaries.push(
@@ -384,12 +355,9 @@ const Canvas = ({ ...props }) => {
 
         let interactedBoundary;
         function isObjectCollision(boundary) {
-
-            // Check if the boundaryType is an iteractable boundary
             if (Object.values(BOUNDARY_TYPES).includes(boundary.interactionData.boundaryType)) {
                 playerIsAtInteractableBoundary = true;
                 interactedBoundary = boundary;
-
             }
         }
 
@@ -400,11 +368,6 @@ const Canvas = ({ ...props }) => {
 
         function animate() { // creates the animation loop
             requestAnimationFrame(animate);
-
-
-
-            // player animation / not currently in use
-            // player.updateFrame();
 
             ctx.clearRect(0, 0, canvas.current.width, canvas.current.height)
 
@@ -541,25 +504,37 @@ const Canvas = ({ ...props }) => {
                 case "w":
                     keys.w.pressed = true;
                     lastKey = "w";
+                    props.closeInventory();
                     break;
                 case "a":
                     keys.a.pressed = true;
                     lastKey = "a";
                     player.isFacingLeft = true;
+                    props.closeInventory();
                     break;
                 case "s":
                     keys.s.pressed = true;
                     lastKey = "s";
+                    props.closeInventory();
                     break;
                 case "d":
                     keys.d.pressed = true;
                     lastKey = "d";
                     player.isFacingLeft = false;
+                    props.closeInventory();
                     break;
                 case "e":
                     if (playerIsAtInteractableBoundary) {
                         keys.e.pressed = true;
                         props.onInteraction(interactedBoundary);
+                    }
+
+                    break;
+                case "i":
+                    if (playerIsAtInteractableBoundary) {
+                        props.showInventory(interactedBoundary);
+                    } else {
+                        props.showInventory();
                     }
 
                     break;
@@ -585,8 +560,6 @@ const Canvas = ({ ...props }) => {
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
-
-
 
     return (
         <div style={{ width: "fit-content" }}>
