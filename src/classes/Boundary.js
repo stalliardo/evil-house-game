@@ -16,6 +16,7 @@ export default class Boundary {
         this.id = id;
         this.type = type;
         this.name = name;
+        this.hasCollision = true;
 
         this.setInteractionText();
     }

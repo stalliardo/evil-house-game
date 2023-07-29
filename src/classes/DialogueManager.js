@@ -1,3 +1,4 @@
+import { INTERACTION_TYPES } from '../../gameUtils/consts.js';
 import { BASEMENT_DIALOGUE_DATA } from '../../gameUtils/dialogue/basementDialogueData.js';
 import GameStateManager from './GameStateManager.js';
 
@@ -6,13 +7,15 @@ export default class DialogueManager {
     this.gameStateManager = new GameStateManager();
   }
 
-  loadDialogueDataForLevel(level, identifier) {
+  loadDialogueDataForLevel(level, instance) {
+    const identifier = instance?.dialogueIdentifier;
+
     let dialogueData = null;
 
     switch (level) {
       case "basement":
         dialogueData = BASEMENT_DIALOGUE_DATA[identifier];
-        return this.filterDialogueData(dialogueData);
+        return this.filterDialogueData(dialogueData, instance);
       case "ground_floor":
         // dialogueData = import('./ground_floor_dialogue_data.js').then((module) => module.default);
         break;
@@ -21,49 +24,51 @@ export default class DialogueManager {
   }
 
 
-  filterDialogueData(dialogueData) {
-    if (!("keyRequired" && "lootableItem" in dialogueData)) {
-      return dialogueData;
-    }
+  filterDialogueData(dialogueData, instance) {
+    const interactionType = instance.interactionType;
+    const hasItem = this.gameStateManager.hasItem(dialogueData.lootableItem);
+    const hasKey = this.gameStateManager.hasItem(dialogueData.keyRequired);
+    const isUnlocked = this.gameStateManager.get(dialogueData.lockName) === "unlocked"; // the locked items name ie "locker"
 
-    if ("lootableItem" && "keyRequired" in dialogueData) {
-      // How do i get the checks? 
+    switch (interactionType) {
 
-      // hasITem checks if the user already has the lootedable item...
-      const hasItem = this.gameStateManager.hasItem(dialogueData.lootableItem);
-      const hasKey = this.gameStateManager.hasItem(dialogueData.keyRequired);
-      const isUnlocked = this.gameStateManager.get(dialogueData.lockName) === "unlocked"; // the locked items name ie "locker"
+      case INTERACTION_TYPES.LOCKED_WITH_LOOT: {
 
-      // console.log("%chasItem = ", "color:red", hasItem);
-      // console.log("%chasKey = ", "color:red", hasKey);
-      // console.log("%cisUnlcoked = ", "color:red", isUnlocked);
-      // console.log("%cdialogueData.lockNam = ", "color:red", dialogueData.lockName);
-      
+        // if they do then they have already looted this so return the lootedText
+        if (hasItem) {
+          return dialogueData.alreadyTakenResponse;
+        } else if (hasKey && !isUnlocked) {
+          return { question: dialogueData.questionWithKey, options: dialogueData.options, lootableItem: dialogueData.lootableItem, keyRequired: dialogueData.keyRequired }
+          // return dialogueData
+        } else if (isUnlocked) {
+          return { question: dialogueData.itemOpenedQuestion, options: dialogueData.itemOpenedOptions, lootableItem: dialogueData.lootableItem, keyRequired: dialogueData.keyRequired }
+        } else {
+          return { question: dialogueData.questionWithoutKey };
+        }
+      }
 
 
-      // if they do then they have already looted this so return the lootedText
-      if (hasItem) {
-        return dialogueData.alreadyTakenResponse;
-      } else if (hasKey && !isUnlocked) {
-        return { question: dialogueData.questionWithKey, options: dialogueData.options, lootableItem: dialogueData.lootableItem, keyRequired: dialogueData.keyRequired }
-        // return dialogueData
-      } else if (isUnlocked) {
-        console.log("%cunlocked called", "color:blue");
-        return {question: dialogueData.itemOpenedQuestion, options: dialogueData.itemOpenedOptions, lootableItem: dialogueData.lootableItem, keyRequired: dialogueData.keyRequired}
-      } else {
-        // has neither key or item
-        // no item or key so return the questionWithoutKey
-        return { question: dialogueData.questionWithoutKey };
+      case INTERACTION_TYPES.LOCKED_DOOR: {
+        if (hasKey && !isUnlocked) {
+          console.log("top if");
+          return { question: dialogueData.questionWithKey, options: dialogueData.options, keyRequired: dialogueData.keyRequired, lockName: dialogueData.lockName };
+        } else if (!hasKey) {
+          console.log("else called");
+          return { question: dialogueData.questionWithoutKey };
+        } else if (isUnlocked) {
+          return { question: " " }
+        }
+      }
 
+      case INTERACTION_TYPES.READ_ONLY: {
+        return dialogueData;
+      }
+      case INTERACTION_TYPES.SINGLE_ITEM: {
+        const hasItem = this.gameStateManager.hasItem(dialogueData.lootableItem);
+        return hasItem ? dialogueData.alreadyTakenResponse : dialogueData;
       }
 
     }
-
-    if (("lootableItem" in dialogueData) && !("keyRequired" in dialogueData)) {
-      const hasItem = this.gameStateManager.hasItem(dialogueData.lootableItem);
-      return hasItem ? dialogueData.alreadyTakenResponse : dialogueData;
-    }
-
   }
 
   displayQuestion(question, options) {

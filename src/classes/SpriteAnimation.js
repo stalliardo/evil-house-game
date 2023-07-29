@@ -1,7 +1,6 @@
 export default class SpriteAnimation {
-    static width = 32;
-    static height = 32;
-
+    static width = 20; // was 32
+    static height = 20; // was 32
 
     constructor(spriteSheetSrc, numberOfFramesPerRow, numberOfRows, animationSpeed, scalingFactor = 1, position, velocity, ctx) {
         this.spriteSheet = new Image();
@@ -17,7 +16,7 @@ export default class SpriteAnimation {
         this.scalingFactor = scalingFactor;
         this.position = position;
         this.velocity = velocity;
-        this.width = 32;
+        this.width = 28; // was 32
         this.height = 32;
         this.ctx = ctx;
         this.spriteRow;
@@ -64,7 +63,6 @@ export default class SpriteAnimation {
         const frameX = this.spriteColumn * this.frameWidth;
         const frameY = this.spriteRow * this.frameHeight;
         
-
 
         this.ctx.drawImage(
             this.spriteSheet,

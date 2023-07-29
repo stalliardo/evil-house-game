@@ -8,8 +8,8 @@ export default class Locker extends Interaction {
     static width = 32;
     static height = 32;
 
-    constructor(position, dialogueIdentifier, level, spriteSheetCoords, ctx, requiresKey) {
-        super(position, dialogueIdentifier, spriteSheetCoords, requiresKey);
+    constructor(position, dialogueIdentifier, level, spriteSheetCoords, ctx, requiresKey, interactionType) {
+        super(position, dialogueIdentifier, spriteSheetCoords, requiresKey, interactionType);
         this.position = position;
         this.dialogueIdentifier = dialogueIdentifier; // eg paperClipOnTable
         this.level = level; // eg basement
@@ -18,9 +18,9 @@ export default class Locker extends Interaction {
         this.requiresKey = requiresKey;
         this.width = 32;
         this.height = 32;
-        
+
     }
-    
+
     // can this also be handled in the parent class?
     interact() {
         // When the player interacts with the table, call the Dialogue Manager with the dialogue identifier and current level
@@ -28,13 +28,13 @@ export default class Locker extends Interaction {
         dialogueManager.handleInteraction(this.dialogueIdentifier, this.level);
     }
 
-    readItem(){
+    readItem() {
         console.log("Red item called");
     }
-      
-      async useItem(item, callback) {
-        switch(item){
-            case "paperClip": 
+
+    useItem(item, callback) {
+        switch (item) {
+            case "paperClip":
                 // item used ie key now need to return some addtionaltext
                 // now need to set the state of the door to locked and or / looted
                 this.gameStateManager.set("basementLocker", "unlocked");
@@ -43,6 +43,6 @@ export default class Locker extends Interaction {
                 callback();
                 break;
         }
-      }
+    }
 
 }

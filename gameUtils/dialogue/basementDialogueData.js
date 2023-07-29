@@ -17,7 +17,7 @@ export const BASEMENT_DIALOGUE_DATA = {
         lootableItem: "basementKey",
         keyRequired: "paperClip",
         lockName: "basementLocker",
-        
+
         questionWithoutKey: "You can't get into the locker. A small, cheap padlock is stopping you.",
 
         questionWithKey: "You can't get into the locker. A small, cheap padlock is stopping you. What will you do? ",
@@ -47,4 +47,22 @@ export const BASEMENT_DIALOGUE_DATA = {
             },
         ],
     },
+
+    basementDoorLocked: {
+        keyRequired: "basementKey",
+        lockName: "basementDoor",
+        
+        questionWithoutKey: "There is heavy double doors here. They are locked. There must be a key around here somwhere.",
+
+        questionWithKey: "You have the basement key. What will you do?",
+        options: [
+            {
+                text: "Use key", action: "useItem", response: "You have used the basement key to unlock the door"
+            },
+        ],
+        // doorOpenedResponse : "You used the key. The door is now unlocked."
+
+       // ? alreadyTakenResponse: "You've already taken the basement key. There's nothing else of interest here."
+    },
+
 }

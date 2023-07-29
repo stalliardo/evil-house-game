@@ -8,8 +8,8 @@ export default class Table extends Interaction {
     static width = 32;
     static height = 32;
 
-    constructor(position, dialogueIdentifier, level, spriteSheetCoords, ctx) {
-        super(position, dialogueIdentifier, spriteSheetCoords);
+    constructor(position, dialogueIdentifier, level, spriteSheetCoords, ctx, requiresKey, interactionType) {
+        super(position, dialogueIdentifier, spriteSheetCoords, requiresKey, interactionType);
         this.position = position;
         this.dialogueIdentifier = dialogueIdentifier; // eg paperClipOnTable
         this.level = level; // eg basement

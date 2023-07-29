@@ -28,7 +28,7 @@ const GameDataDisplay = ({ ...props }) => {
             setAdditionalText("");
             setLoadNextText(false);
         }
-        const dialogueOptions = dialogueManager.loadDialogueDataForLevel(boundaryInstance?.level, boundaryInstance?.dialogueIdentifier);
+        const dialogueOptions = dialogueManager.loadDialogueDataForLevel(boundaryInstance?.level, boundaryInstance);
         setTextOptions(dialogueOptions);
     }
 
@@ -52,23 +52,19 @@ const GameDataDisplay = ({ ...props }) => {
     const optionsSelected = (option) => {
         switch (option.action) {
             case "readItem": {
-                console.log("read called + dialogueData = ", option);
                 setAdditionalText(option.response);
                 break;
             }
             case "leaveItem": {
-                console.log("leave called + dialogueData = ", option);
                 setAdditionalText(option.response);
                 break;
             }
             case "takeItem": {
-                console.log("take called + dialogueData = ", option);
                 setAdditionalText(option.response);
                 boundaryInstance[option.action](textOptions.lootableItem);
                 break;
             }
             case "useItem": {
-                console.log("use called + dialogueData = ", option);
                 boundaryInstance[option.action](textOptions.keyRequired, useItemCallback);
                 setLoadNextText(option.response);
                 break;
@@ -82,6 +78,7 @@ const GameDataDisplay = ({ ...props }) => {
 
     return (
             <div style={styles2}>
+                {console.log("text ops = ", textOptions)}
                     <button onClick={clearStorage}>Clear storage</button>
                     <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{props?.title}</h1>
                     <div style={{ border: "1px solid blue", display: "flex" }}>
