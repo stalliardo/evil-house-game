@@ -16,6 +16,7 @@ export const BASEMENT_DIALOGUE_DATA = {
     lockerLockedWithPadLock: {
         lootableItem: "basementKey",
         keyRequired: "paperClip",
+        lockName: "basementLocker",
         
         questionWithoutKey: "You can't get into the locker. A small, cheap padlock is stopping you.",
 

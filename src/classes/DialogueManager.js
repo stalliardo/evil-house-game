@@ -21,42 +21,45 @@ export default class DialogueManager {
   }
 
 
-  filterDialogueData(dialogueData){
-    if(!("keyRequired" && "lootableItem" in dialogueData)){
+  filterDialogueData(dialogueData) {
+    if (!("keyRequired" && "lootableItem" in dialogueData)) {
       return dialogueData;
     }
 
-    if("lootableItem" && "keyRequired" in dialogueData){
-      console.log("this is a locked container which needs multiple checks");
+    if ("lootableItem" && "keyRequired" in dialogueData) {
       // How do i get the checks? 
-      console.log("\ndialogue data for the locked container = ", dialogueData);
 
       // hasITem checks if the user already has the lootedable item...
       const hasItem = this.gameStateManager.hasItem(dialogueData.lootableItem);
       const hasKey = this.gameStateManager.hasItem(dialogueData.keyRequired);
+      const isUnlocked = this.gameStateManager.get(dialogueData.lockName) === "unlocked"; // the locked items name ie "locker"
 
-
-      console.log("hasItem = ", hasItem);
-      console.log("hasKeyRequired = ", hasKey);
+      // console.log("%chasItem = ", "color:red", hasItem);
+      // console.log("%chasKey = ", "color:red", hasKey);
+      // console.log("%cisUnlcoked = ", "color:red", isUnlocked);
+      // console.log("%cdialogueData.lockNam = ", "color:red", dialogueData.lockName);
+      
 
 
       // if they do then they have already looted this so return the lootedText
-      if(hasItem){
+      if (hasItem) {
         return dialogueData.alreadyTakenResponse;
-      } else if(hasKey){
-        return {question: dialogueData.questionWithKey, options: dialogueData.options, lootableItem: dialogueData.lootableItem, keyRequired: dialogueData.keyRequired}
+      } else if (hasKey && !isUnlocked) {
+        return { question: dialogueData.questionWithKey, options: dialogueData.options, lootableItem: dialogueData.lootableItem, keyRequired: dialogueData.keyRequired }
         // return dialogueData
+      } else if (isUnlocked) {
+        console.log("%cunlocked called", "color:blue");
+        return {question: dialogueData.itemOpenedQuestion, options: dialogueData.itemOpenedOptions, lootableItem: dialogueData.lootableItem, keyRequired: dialogueData.keyRequired}
       } else {
         // has neither key or item
-        console.log("%celse called", "color:red");
         // no item or key so return the questionWithoutKey
-        return {question: dialogueData.questionWithoutKey};
+        return { question: dialogueData.questionWithoutKey };
 
       }
 
     }
 
-    if(("lootableItem" in dialogueData) && !("keyRequired" in dialogueData)){
+    if (("lootableItem" in dialogueData) && !("keyRequired" in dialogueData)) {
       const hasItem = this.gameStateManager.hasItem(dialogueData.lootableItem);
       return hasItem ? dialogueData.alreadyTakenResponse : dialogueData;
     }

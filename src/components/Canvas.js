@@ -533,6 +533,7 @@ const Canvas = ({ ...props }) => {
                     break;
                 case "e":
                     if (playerIsAtInteractableBoundary) {
+                        console.log("%ce pressed", "color:red");
                         keys.e.pressed = true;
                         props.onInteraction(interactedBoundary);
                     }

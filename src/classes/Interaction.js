@@ -43,12 +43,8 @@ export default class Interaction {
 
     // will need to override this in locker class as further options are required
     takeItem(item){ 
-        console.log("item passed to fucniton called from interaction class = ", item);
-        switch(item){
-            case "paperClip": {
-                this.gameStateManager.addToInventory(item);
-                break;
-            }
-        }
+        this.gameStateManager.addToInventory(item);
     }
+
+
 }

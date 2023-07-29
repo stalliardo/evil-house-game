@@ -15,7 +15,6 @@ export default class GameStateManager {
     }
   
     set(key, value) {
-      console.log("set called");
       this.gameState[key] = value;
       this.saveToLocalStorage();
     }
@@ -36,6 +35,11 @@ export default class GameStateManager {
     hasItem(item) {
       return this.playerInventory.hasItem(item);
     }
+
+    delete(){
+      localStorage.removeItem("playerInventory");
+      localStorage.removeItem("gameState");
+    }
   }
   
   class PlayerInventory {
@@ -45,7 +49,7 @@ export default class GameStateManager {
   
     loadFromLocalStorage() {
       const inventoryJSON = localStorage.getItem("playerInventory");
-      this.collectedItems = inventoryJSON ? JSON.parse(inventoryJSON) : [];
+      this.collectedItems = inventoryJSON ? JSON.parse(inventoryJSON) : [];  
     }
   
     saveToLocalStorage() {
@@ -54,6 +58,7 @@ export default class GameStateManager {
     }
   
     collectItem(item) {
+      this.loadFromLocalStorage(); // ensure data is fresh
       this.collectedItems.push(item);
       this.saveToLocalStorage();
     }
