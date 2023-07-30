@@ -4,6 +4,9 @@ import InteractableOptionItem from './gamePrompts/InteractableOptionItem';
 import Inventory from './inventory/Inventory';
 import DialogueManager from '@/classes/DialogueManager';
 import GameStateManager from '@/classes/GameStateManager';
+import { useDispatch } from 'react-redux';
+import { updateLevelData } from '@/features/gameState/gameStateSlice';
+import { levelLoader } from '../../gameUtils/levelLoader';
 
 const GameDataDisplay = ({ ...props }) => {
     const { boundaryInstance } = props;
@@ -13,6 +16,7 @@ const GameDataDisplay = ({ ...props }) => {
     const [textOptions, setTextOptions] = useState([]);
     const [showGameDataDisplay, setShowGameDataDisplay] = useState(false);
     const [loadNextText, setLoadNextText] = useState(false);
+    const dispatch = useDispatch();
 
     const getTextOptions = () => {
         if(loadNextText && props.showGameDataDisplay){
@@ -41,8 +45,9 @@ const GameDataDisplay = ({ ...props }) => {
 
     }
 
-    const useItemCallback = () => {}
-
+    const updateLevelState = () => {
+        dispatch(updateLevelData());
+    }
 
     const optionsSelected = (option) => {
         switch (option.action) {
@@ -60,8 +65,12 @@ const GameDataDisplay = ({ ...props }) => {
                 break;
             }
             case "useItem": {
-                boundaryInstance[option.action](textOptions.keyRequired, useItemCallback);
+                boundaryInstance[option.action](textOptions.keyRequired);
                 setLoadNextText(option.response);
+                break;
+            }
+            case "changeLevel" : {
+                boundaryInstance[option.action](textOptions.levelName, updateLevelState);
                 break;
             }
         }
@@ -73,9 +82,8 @@ const GameDataDisplay = ({ ...props }) => {
 
     return (
             <div style={{width: "800px", height: "100%"}}>
-                {console.log("text ops = ", textOptions)}
                     <button onClick={clearStorage}>Clear storage</button>
-                    <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{props?.title}</h1>
+                    <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{levelLoader().level}</h1>
                     <div style={{ border: "1px solid blue", display: "flex" }}>
                         {showInventory &&
                             <div style={{ marginRight: "20px", border: "1px solid red", width: "50%" }}>

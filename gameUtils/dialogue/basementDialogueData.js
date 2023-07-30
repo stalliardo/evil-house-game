@@ -60,9 +60,16 @@ export const BASEMENT_DIALOGUE_DATA = {
                 text: "Use key", action: "useItem", response: "You have used the basement key to unlock the door"
             },
         ],
-        // doorOpenedResponse : "You used the key. The door is now unlocked."
+    },
 
-       // ? alreadyTakenResponse: "You've already taken the basement key. There's nothing else of interest here."
+    changeLevelPrompt: {
+        question: "Well done. You have found the stairs that will lead you out of here. What will you do?",
+        levelName: "groundFloor",
+        options: [
+            {
+                text: "Use the stairs", action: "changeLevel", response: "You take the paper clip and put it in your inventory."
+            },
+        ],
     },
 
 }

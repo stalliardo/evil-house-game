@@ -8,5 +8,6 @@ export const INTERACTION_TYPES = {
     LOCKED_WITH_LOOT: "lockedWithLoot",
     READ_ONLY: "readOnly",
     LOCKED_DOOR: "lockedDoor",
-    SINGLE_ITEM: "singleItem" // ie paperClip on table top
+    SINGLE_ITEM: "singleItem", // ie paperClip on table top
+    CHANGE_LEVEL: "changeLevel"
 }

@@ -2,6 +2,8 @@
 import Canvas from "@/components/Canvas";
 import GameDataDisplay from "@/components/GameDataDisplay";
 import { useMemo, useRef, useState } from "react";
+import { Provider } from "react-redux";
+import store from "./store";
 
 export default function Home() {
 
@@ -36,13 +38,15 @@ export default function Home() {
   const canvas = useMemo(() => <Canvas onInteraction={handleInteraction} closeInteractionDisplay={closeInteractionDisplay} showInventory={onShowInventory} closeInventory={closeInventory} />, []);
 
   return (
-    <div style={{
-      display: "flex",
-      border: "1px solid red",
-      margin: "60px auto"
-    }}>
-      {canvas}
-      <GameDataDisplay title="Level 1 - The Basement" showGameDataDisplay={showGameDataDisplay} showInventory={showInventory} boundaryInstance={boundaryInstance} closeInventory={closeInventory}/>
-    </div>
+    <Provider store={store}>
+      <div style={{
+        display: "flex",
+        border: "1px solid red",
+        margin: "60px auto"
+      }}>
+        {canvas}
+        <GameDataDisplay title="Level 1 - The Basement" showGameDataDisplay={showGameDataDisplay} showInventory={showInventory} boundaryInstance={boundaryInstance} closeInventory={closeInventory} />
+      </div>
+    </Provider>
   )
 }
