@@ -8,7 +8,7 @@ const TextModal = () => {
     <div className={styles.modalContainer}>
       <div className={styles.modalContentContainer}>
         <h1>{text.title}</h1>
-        <p>{text.body}</p>
+        <pre>{text.body}</pre>
         <div className={styles.buttonContainer}>
           <button>One</button>
           <button>Two</button>

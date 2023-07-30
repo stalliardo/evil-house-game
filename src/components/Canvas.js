@@ -14,6 +14,7 @@ const Canvas = ({ ...props }) => {
     const [ctx, setCtx] = useState(null);
     const dispatch = useDispatch();
     const levelData = useSelector((state) => state.gameState);
+    const isModalOpen = useSelector(state => state.modal.isOpen);
 
     useEffect(() => {
         if (canvas.current) {
@@ -84,73 +85,75 @@ const Canvas = ({ ...props }) => {
             requestAnimationFrame(animate);
             ctx.clearRect(0, 0, canvas.current.width, canvas.current.height)
 
-            if (keys.w.pressed && lastKey === "w") {
-                for (let i = 0; i < boundaries.length; i++) {
-                    const boundary = boundaries[i];
-                    if (boundary.hasCollision === true) {
-                        if (rectanglesCollide({
-                            rect1: { ...player, velocity: { x: 0, y: -5 } },
-                            rect2: boundary
-                        })) {
-                            player.velocity.y = 0;
-                            isObjectCollision(boundary);
-                            break;
-                        } else {
-                            resetBoundaryAndInteractableBool();
-                            player.velocity.y = -5;
+            if(!isModalOpen){
+                if (keys.w.pressed && lastKey === "w") {
+                    for (let i = 0; i < boundaries.length; i++) {
+                        const boundary = boundaries[i];
+                        if (boundary.hasCollision === true) {
+                            if (rectanglesCollide({
+                                rect1: { ...player, velocity: { x: 0, y: -5 } },
+                                rect2: boundary
+                            })) {
+                                player.velocity.y = 0;
+                                isObjectCollision(boundary);
+                                break;
+                            } else {
+                                resetBoundaryAndInteractableBool();
+                                player.velocity.y = -5;
+                            }
                         }
                     }
-                }
-
-            } else if (keys.a.pressed && lastKey === "a") {
-
-                for (let i = 0; i < boundaries.length; i++) {
-                    const boundary = boundaries[i];
-                    if (boundary.hasCollision === true) {
-                        if (rectanglesCollide({
-                            rect1: { ...player, velocity: { x: -5, y: 0 } },
-                            rect2: boundary
-                        })) {
-                            player.velocity.x = 0;
-                            isObjectCollision(boundary);
-                            break;
-                        } else {
-                            player.velocity.x = -5;
-                            resetBoundaryAndInteractableBool();
+    
+                } else if (keys.a.pressed && lastKey === "a") {
+    
+                    for (let i = 0; i < boundaries.length; i++) {
+                        const boundary = boundaries[i];
+                        if (boundary.hasCollision === true) {
+                            if (rectanglesCollide({
+                                rect1: { ...player, velocity: { x: -5, y: 0 } },
+                                rect2: boundary
+                            })) {
+                                player.velocity.x = 0;
+                                isObjectCollision(boundary);
+                                break;
+                            } else {
+                                player.velocity.x = -5;
+                                resetBoundaryAndInteractableBool();
+                            }
                         }
                     }
-                }
-            } else if (keys.s.pressed && lastKey === "s") {
-                for (let i = 0; i < boundaries.length; i++) {
-                    const boundary = boundaries[i];
-                    if (boundary.hasCollision === true) {
-                        if (rectanglesCollide({
-                            rect1: { ...player, velocity: { x: 0, y: 5 } },
-                            rect2: boundary
-                        })) {
-                            player.velocity.y = 0;
-                            isObjectCollision(boundary);
-                            break;
-                        } else {
-                            player.velocity.y = +5;
-                            resetBoundaryAndInteractableBool();
+                } else if (keys.s.pressed && lastKey === "s") {
+                    for (let i = 0; i < boundaries.length; i++) {
+                        const boundary = boundaries[i];
+                        if (boundary.hasCollision === true) {
+                            if (rectanglesCollide({
+                                rect1: { ...player, velocity: { x: 0, y: 5 } },
+                                rect2: boundary
+                            })) {
+                                player.velocity.y = 0;
+                                isObjectCollision(boundary);
+                                break;
+                            } else {
+                                player.velocity.y = +5;
+                                resetBoundaryAndInteractableBool();
+                            }
                         }
                     }
-                }
-            } else if (keys.d.pressed && lastKey === "d") {
-                for (let i = 0; i < boundaries.length; i++) {
-                    const boundary = boundaries[i];
-                    if (boundary.hasCollision === true) {
-                        if (rectanglesCollide({
-                            rect1: { ...player, velocity: { x: 5, y: 0 } },
-                            rect2: boundary
-                        })) {
-                            player.velocity.x = 0;
-                            isObjectCollision(boundary);
-                            break;
-                        } else {
-                            player.velocity.x = 5;
-                            resetBoundaryAndInteractableBool();
+                } else if (keys.d.pressed && lastKey === "d") {
+                    for (let i = 0; i < boundaries.length; i++) {
+                        const boundary = boundaries[i];
+                        if (boundary.hasCollision === true) {
+                            if (rectanglesCollide({
+                                rect1: { ...player, velocity: { x: 5, y: 0 } },
+                                rect2: boundary
+                            })) {
+                                player.velocity.x = 0;
+                                isObjectCollision(boundary);
+                                break;
+                            } else {
+                                player.velocity.x = 5;
+                                resetBoundaryAndInteractableBool();
+                            }
                         }
                     }
                 }
@@ -188,6 +191,7 @@ const Canvas = ({ ...props }) => {
             player.velocity.y = 0;
             player.velocity.x = 0;
 
+           if(!isModalOpen){
             if (keys.w.pressed && lastKey === "w") {
                 player.velocity.y = -5;
             } else if (keys.a.pressed && lastKey === "a") {
@@ -199,6 +203,7 @@ const Canvas = ({ ...props }) => {
                 player.velocity.x = +5;
                 player.setDirection("right");
             }
+           }
         }
 
         animate();

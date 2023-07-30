@@ -8,12 +8,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateLevelData } from '@/features/gameState/gameStateSlice';
 import { levelLoader } from '../../gameUtils/levelLoader';
 import TextModal from './modal/TextModal';
+import { setTextAndDisplay } from '@/features/gameState/modalSlice';
+import { MODAL_TEXT } from '../../gameUtils/consts';
 
 const GameDataDisplay = ({ ...props }) => {
     const { boundaryInstance } = props;
     const [additionalText, setAdditionalText] = useState("");
     const { showInventory } = props;
     const dialogueManager = new DialogueManager();
+    const gameStateManager = new GameStateManager();
     const [textOptions, setTextOptions] = useState([]);
     const [showGameDataDisplay, setShowGameDataDisplay] = useState(false);
     const [loadNextText, setLoadNextText] = useState(false);
@@ -37,12 +40,18 @@ const GameDataDisplay = ({ ...props }) => {
         setAdditionalText("");
         getTextOptions();
         setShowGameDataDisplay(props.showGameDataDisplay);
+        const hasPlayedPreviously = gameStateManager.has("level");
+
+        if(!hasPlayedPreviously){ // is players first time
+            dispatch(setTextAndDisplay(MODAL_TEXT.ENTER_GAME_TEXT))
+        }
+
     }, [props.showGameDataDisplay, loadNextText])
 
 
     const clearStorage = () => {
         // TODO remove
-        const gameStateManager = new GameStateManager();
+        
         gameStateManager.delete()
 
     }
