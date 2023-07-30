@@ -4,6 +4,7 @@ import Door from "@/classes/Door";
 import Boundary from "@/classes/Boundary";
 import { INTERACTION_TYPES } from "./consts";
 import ChangeLevel from "@/classes/ChangeLevel";
+import FloorTile from "@/classes/FloorTile";
 
 export const dataLoader = (level, symbol, i, j, ctx) => {
     switch (level) {
@@ -14,6 +15,14 @@ export const dataLoader = (level, symbol, i, j, ctx) => {
 
 export const basement = (symbol, i, j, ctx) => {
     switch (symbol) {
+        // case " ":
+        //     return new FloorTile({
+        //         position: {
+        //             x: Boundary.width * j,
+        //             y: Boundary.height * i
+        //         },
+                
+        //     }, ctx)
         case "-":
             return new Boundary({
                 position: {
