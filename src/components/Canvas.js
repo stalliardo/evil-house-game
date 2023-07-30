@@ -16,13 +16,14 @@ const Canvas = ({ ...props }) => {
     const [levelMap, setMap] = useState([]);
 
     useEffect(() => {
+        console.log("%cUse Effect called", "color:red");
         if (canvas.current) {
             setCtx(canvas.current.getContext("2d"));
             canvas.current.width = 600;
             canvas.current.height = 600;
             setMap(levelData.map);
         }
-    }, []);
+    }, [levelMap]);
 
     if (ctx !== null) {
         const keys = {

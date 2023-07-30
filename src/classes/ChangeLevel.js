@@ -1,4 +1,3 @@
-import GameStateManager from "./GameStateManager";
 import Interaction from "./Interaction";
 
 
@@ -29,6 +28,7 @@ export default class ChangeLevel extends Interaction {
     switch (levelName) {
       case "groundFloor":
         this.gameStateManager.set("level", levelName);
+        // now need to load the level data
         if(callback){
             callback();
         }
