@@ -18,7 +18,6 @@ export default class Interaction {
 
     // Common method for interaction (to be overridden in subclasses)
     interact() {
-        console.log("Default interaction");
     }
 
     loadDoorImage(){

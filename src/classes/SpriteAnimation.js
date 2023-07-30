@@ -23,20 +23,20 @@ export default class SpriteAnimation {
         this.spriteColumn;
     }
 
-    updateFrame() {
+    // updateFrame() {
        
-        // below is used for animating sprite sheets but not using for now
-        // this.frameCounter += 1;
+    //     // below is used for animating sprite sheets but not using for now
+    //     // this.frameCounter += 1;
 
-        // if (this.frameCounter >= 16 * this.animationSpeed) { // <- time
-        //     this.frameIndex += 1  ;
-        //     this.frameCounter = 0;
-        //     if (this.frameIndex > 1) {
-        //         this.frameIndex = 0;
-        //     }
-        // }
+    //     // if (this.frameCounter >= 16 * this.animationSpeed) { // <- time
+    //     //     this.frameIndex += 1  ;
+    //     //     this.frameCounter = 0;
+    //     //     if (this.frameIndex > 1) {
+    //     //         this.frameIndex = 0;
+    //     //     }
+    //     // }
 
-    }
+    // }
 
     drawSprite() {
         let rowIndex = 0;
@@ -63,6 +63,7 @@ export default class SpriteAnimation {
         const frameX = this.spriteColumn * this.frameWidth;
         const frameY = this.spriteRow * this.frameHeight;
         
+        // FIX draw not working on hard reload
 
         this.ctx.drawImage(
             this.spriteSheet,

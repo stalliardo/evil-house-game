@@ -1,6 +1,5 @@
 import Interaction from "./Interaction";
 
-
 export default class ChangeLevel extends Interaction {
   static width = 32;
   static height = 32;
@@ -24,15 +23,12 @@ export default class ChangeLevel extends Interaction {
    */
 
   changeLevel(levelName, callback) {
-    // switch might not be required, but will see as app grows
     switch (levelName) {
-      case "groundFloor":
+      case "groundFloor": {
         this.gameStateManager.set("level", levelName);
-        // now need to load the level data
-        if(callback){
-            callback();
-        }
+        callback();
         break;
+      }
     }
   }
 }

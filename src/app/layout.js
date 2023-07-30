@@ -1,11 +1,13 @@
+import { Provider } from 'react-redux'
 import './globals.css'
 import { Inter, Silkscreen, Edu_SA_Beginner } from 'next/font/google'
+import store from './store'
 
 export const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
 })
- 
+
 export const slikScreen = Silkscreen({
   subsets: ['latin'],
   display: 'swap',

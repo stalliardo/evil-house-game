@@ -5,25 +5,24 @@ import { useEffect, useRef, useState } from "react";
 import Prompt from "@/classes/Prompt";
 import SpriteAnimation from "@/classes/SpriteAnimation";
 
-import { levelLoader } from "../../gameUtils/levelLoader";
 import { dataLoader } from "../../gameUtils/levelsData";
-
-const levelData = levelLoader();
+import { useDispatch, useSelector } from "react-redux";
+import { updateLevelData } from "@/features/gameState/gameStateSlice";
 
 const Canvas = ({ ...props }) => {
     const canvas = useRef();
     const [ctx, setCtx] = useState(null);
-    const [levelMap, setMap] = useState([]);
+    const dispatch = useDispatch();
+    const levelData = useSelector((state) => state.gameState);
 
     useEffect(() => {
-        console.log("%cUse Effect called", "color:red");
         if (canvas.current) {
             setCtx(canvas.current.getContext("2d"));
             canvas.current.width = 600;
             canvas.current.height = 600;
-            setMap(levelData.map);
+            dispatch(updateLevelData())
         }
-    }, [levelMap]);
+    }, []);
 
     if (ctx !== null) {
         const keys = {
@@ -51,7 +50,7 @@ const Canvas = ({ ...props }) => {
         spriteSheet.src = "dungeonTileset.png";
         const player = new SpriteAnimation('allCharacters.png', 7, 4, 1, 2, { x: 200, y: 100 }, { x: 0, y: 0 }, ctx);
 
-        levelMap.forEach((row, i) => {
+        levelData.map.forEach((row, i) => {
             row.forEach((symbol, j) => {
                 if (dataLoader(levelData.level, symbol, i, j, ctx) !== undefined) {
                     boundaries.push(dataLoader(levelData.level, symbol, i, j, ctx));
@@ -174,10 +173,10 @@ const Canvas = ({ ...props }) => {
             })
 
             player.update();
-            player.drawSprite(ctx, 100, 100);
+            // player.drawSprite(ctx, 100, 100);
 
             if (playerIsAtInteractableBoundary) {
-                const pressEPrompt = new Prompt("Press 'E'", (levelMap[0].length * 32 / 2 - 40), (levelMap.length * 32 / 2), canvas.current, ctx);
+                const pressEPrompt = new Prompt("Press 'E'", (levelData.map[0].length * 32 / 2 - 40), (levelData.map.length * 32 / 2), canvas.current, ctx);
                 pressEPrompt.draw()
             } else {
                 if (keys.e.pressed) {
