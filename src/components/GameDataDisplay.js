@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateLevelData } from '@/features/gameState/gameStateSlice';
 import { levelLoader } from '../../gameUtils/levelLoader';
 import TextModal from './modal/TextModal';
-import { setTextAndDisplay } from '@/features/gameState/modalSlice';
+import { loadModal, setTextAndDisplay } from '@/features/gameState/modalSlice';
 import { MODAL_TEXT } from '../../gameUtils/consts';
 
 const GameDataDisplay = ({ ...props }) => {
@@ -42,8 +42,14 @@ const GameDataDisplay = ({ ...props }) => {
         setShowGameDataDisplay(props.showGameDataDisplay);
         const hasPlayedPreviously = gameStateManager.has("level");
 
-        if(!hasPlayedPreviously){ // is players first time
-            dispatch(setTextAndDisplay(MODAL_TEXT.ENTER_GAME_TEXT))
+        if (!hasPlayedPreviously) { // is players first time
+            dispatch(
+                loadModal({
+                    text: MODAL_TEXT.ENTER_GAME_TEXT,
+                    confirmButtonText: "Lets Go",
+                    confirmCallback: "close"
+                })
+            )
         }
 
     }, [props.showGameDataDisplay, loadNextText])
@@ -51,7 +57,7 @@ const GameDataDisplay = ({ ...props }) => {
 
     const clearStorage = () => {
         // TODO remove
-        
+
         gameStateManager.delete()
 
     }

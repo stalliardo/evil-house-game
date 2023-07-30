@@ -26,6 +26,7 @@
   .modalContentContainer h1 {
     margin: 0 0 20px 0;
     color: greenyellow;
+    
   }
     
   .modalContentContainer p {
@@ -34,7 +35,6 @@
   .modalContentContainer pre {
     white-space: pre-wrap;
     font-size: 18px;
-    padding: 0 20px
   }
   
   .modalContentContainer button {
@@ -56,7 +56,7 @@
 
   .buttonContainer {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     margin-top: 20px;
   }
   

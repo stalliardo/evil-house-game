@@ -7,7 +7,13 @@ export const modalSlice = createSlice({
         text: {
             title: "Test title",
             body: "test body"
-        }
+        },
+        options: {
+            confirmButtonText: "",
+            cancelButtonText: ""
+        },
+        confirmCallback: "",
+        cancelCallback: "",
     },
     reducers: {
         toggleIsOpen: (state) => {
@@ -16,11 +22,21 @@ export const modalSlice = createSlice({
         setTextAndDisplay: (state, action) => {
             state.isOpen = true;
             state.text = action.payload
+        },
+        loadModal: (state, action) => {
+            state.isOpen = true;
+            state.text = action.payload.text;
+            state.options.confirmButtonText = action.payload.confirmButtonText;
+            state.options.cancelButtonText = action.payload.cancelButtonText;
+            state.callbackAction = action.payload.callbackAction;
+        },
+        closeModal: (state) => {
+            console.log("close modal called");
+            state.isOpen = false;
         }
-       
     },
 })
 
-export const { toggleIsOpen, setTextAndDisplay } = modalSlice.actions
+export const { toggleIsOpen, setTextAndDisplay, loadModal, closeModal } = modalSlice.actions
 
 export default modalSlice.reducer;
