@@ -6,10 +6,13 @@ import map from "../../gameUtils/map";
 import Player from "@/classes/Player";
 import CanvasText from "@/classes/CanvasText";
 import Prompt from "@/classes/Prompt";
-import { BOUNDARY_TYPES } from "../../gameUtils/consts";
+import { BOUNDARY_TYPES, INTERACTION_TYPES } from "../../gameUtils/consts";
 import SpriteAnimation from "@/classes/SpriteAnimation";
 import { BASEMENT_NOTES } from "../../gameUtils/gameTextConsts";
 import { addItemToInventory, getItemFromInventory, updateItemInInventory } from "../../gameUtils/localStorageUtils";
+import Table from "@/classes/Table";
+import Locker from "@/classes/Locker";
+import Door from "@/classes/Door";
 
 const Canvas = ({ ...props }) => {
     const canvas = useRef();
@@ -73,93 +76,51 @@ const Canvas = ({ ...props }) => {
                         )
                         break;
 
-                    case "ldl":
+                    case "lockedDoor":
                         boundaries.push(
-                            new Boundary({
-                                position: {
+                            new Door(
+                                {
                                     x: Boundary.width * j,
                                     y: Boundary.height * i
                                 },
-                                ctx,
-                                colour: "red",
-                                interactionData: {
-                                    boundaryType: BOUNDARY_TYPES.LOCKED_DOOR,
-                                    text: "The door is locked! Maybe there is a key around here somewhere."
-                                },
-                                spriteSheetCoords: {
-                                    row: 6,
-                                    column: 6
-                                }
-                            })
+
+                                "basementDoorLocked",
+                                "basement",
+                                {}, ctx, true, INTERACTION_TYPES.LOCKED_DOOR, "left")
 
                         )
                         break;
-                    case "ldr":
-                        boundaries.push(
-                            new Boundary({
-                                position: {
-                                    x: Boundary.width * j,
-                                    y: Boundary.height * i
-                                },
-                                ctx,
-                                colour: "red",
-                                interactionData: {
-                                    boundaryType: BOUNDARY_TYPES.LOCKED_DOOR,
-                                    text: "The door is locked! Maybe there is a key around here somewhere."
-                                },
-                                spriteSheetCoords: {
-                                    row: 6,
-                                    column: 7
-                                }
-                            })
-                        )
-                        break;
+
                     case "locker1":
                         boundaries.push(
-                            new Boundary({
-                                position: {
+                            new Locker(
+                                {
                                     x: Boundary.width * j,
                                     y: Boundary.height * i
                                 },
-                                ctx,
-                                name: "basement_lockedLocker",
-                                interactionData: {
-                                    boundaryType: BOUNDARY_TYPES.lOCKER,
-                                    textOptions: [BASEMENT_NOTES.LOCKER_LOCKED, BASEMENT_NOTES.LOCKER_UNLOCKED, BASEMENT_NOTES.LOCKER_LOOTED],
-                                    interactionOptions: ["Take"],
-                                    lootables: "basementKey",
-                                    type: "lockedContainer",
 
-                                },                            
-                                spriteSheetCoords: {
+                                "lockerLockedWithPadLock",
+                                "basement",
+                                {
                                     row: 8,
                                     column: 5
-                                }
-                            })
+                                }, ctx, true, INTERACTION_TYPES.LOCKED_WITH_LOOT)
                         )
                         break;
                     case "locker2":
                         boundaries.push(
-                            new Boundary({
-                                position: {
+                            new Locker(
+                                {
                                     x: Boundary.width * j,
                                     y: Boundary.height * i
                                 },
-                                ctx,
-                                name: "basement_openLocker",
-                                interactionData: {
-                                    boundaryType: BOUNDARY_TYPES.lOCKER,
-                                    // text: BASEMEwNT_NOTES.LOCKER_WITH_SHIRT,
-                                    textOptions: [BASEMENT_NOTES.LOCKER_WITH_SHIRT, BASEMENT_NOTES.NOTE_1],
-                                    interactionOptions: ["Read"],
-                                    type: "staticObject",
-                                    
-                                },
-                                spriteSheetCoords: {
+
+                                "lockerWithNoteInShirt",
+                                "basement",
+                                {
                                     row: 8,
                                     column: 5
-                                }
-                            })
+                                }, ctx, false, INTERACTION_TYPES.READ_ONLY)
                         )
                         break;
                     case "1":
@@ -299,44 +260,20 @@ const Canvas = ({ ...props }) => {
                         break;
                     case "t":
                         boundaries.push(
-                            new Boundary({
-                                position: {
+                            new Table(
+                                {
                                     x: Boundary.width * j,
                                     y: Boundary.height * i
                                 },
-                                name: "basement_paperClip",
-                                ctx,
-                                interactionData: {
-                                    boundaryType: BOUNDARY_TYPES.TABLE,
-                                    textOptions: [BASEMENT_NOTES.TABLE_TEXT, BASEMENT_NOTES.TABLE_TEXT_HAS_CLIP_IN_INV],
-                                    interactionOptions: ["Take"],
-                                    lootables: "basement_paperClip",
-                                    type: "staticObject",
-                                },
-                                spriteSheetCoords: {
+
+                                "paperClipOnTable",
+                                "basement",
+                                {
                                     row: 8,
                                     column: 3
-                                }
-                            })
+                                }, ctx, false, INTERACTION_TYPES.SINGLE_ITEM)
                         )
                         break;
-
-                    default:
-                    // boundaries.push(
-                    //     new Boundary({
-                    //         position: {
-                    //             x: Boundary.width * j,
-                    //             y: Boundary.height * i
-                    //         },
-                    //         ctx,
-                    //         spriteSheetCoords: {
-                    //             row: 6,
-                    //             column: 3
-                    //         }
-                    //     })
-                    // )
-
-
                 }
             })
         })
@@ -355,7 +292,7 @@ const Canvas = ({ ...props }) => {
 
         let interactedBoundary;
         function isObjectCollision(boundary) {
-            if (Object.values(BOUNDARY_TYPES).includes(boundary.interactionData.boundaryType)) {
+            if (boundary.isInteractable) {
                 playerIsAtInteractableBoundary = true;
                 interactedBoundary = boundary;
             }
@@ -374,17 +311,19 @@ const Canvas = ({ ...props }) => {
             if (keys.w.pressed && lastKey === "w") {
                 for (let i = 0; i < boundaries.length; i++) {
                     const boundary = boundaries[i];
-                    if (rectanglesCollide({
-                        rect1: { ...player, velocity: { x: 0, y: -5 } },
-                        rect2: boundary
-                    })) {
-                        player.velocity.y = 0;
-                        isObjectCollision(boundary);
+                    if (boundary.hasCollision === true) {
 
-                        break;
-                    } else {
-                        resetBoundaryAndInteractableBool();
-                        player.velocity.y = -5;
+                        if (rectanglesCollide({
+                            rect1: { ...player, velocity: { x: 0, y: -5 } },
+                            rect2: boundary
+                        })) {
+                            player.velocity.y = 0;
+                            isObjectCollision(boundary);
+                            break;
+                        } else {
+                            resetBoundaryAndInteractableBool();
+                            player.velocity.y = -5;
+                        }
                     }
                 }
 
@@ -392,49 +331,53 @@ const Canvas = ({ ...props }) => {
 
                 for (let i = 0; i < boundaries.length; i++) {
                     const boundary = boundaries[i];
-                    if (rectanglesCollide({
-                        rect1: { ...player, velocity: { x: -5, y: 0 } },
-                        rect2: boundary
-                    })) {
-                        player.velocity.x = 0;
-                        isObjectCollision(boundary);
-                        break;
-                    } else {
-                        player.velocity.x = -5;
-                        resetBoundaryAndInteractableBool();
-
+                    if (boundary.hasCollision === true) {
+                        if (rectanglesCollide({
+                            rect1: { ...player, velocity: { x: -5, y: 0 } },
+                            rect2: boundary
+                        })) {
+                            player.velocity.x = 0;
+                            isObjectCollision(boundary);
+                            break;
+                        } else {
+                            player.velocity.x = -5;
+                            resetBoundaryAndInteractableBool();
+                        }
                     }
                 }
             } else if (keys.s.pressed && lastKey === "s") {
                 for (let i = 0; i < boundaries.length; i++) {
                     const boundary = boundaries[i];
-                    if (rectanglesCollide({
-                        rect1: { ...player, velocity: { x: 0, y: 5 } },
-                        rect2: boundary
-                    })) {
-                        player.velocity.y = 0;
-                        isObjectCollision(boundary);
-                        break;
-                    } else {
-                        player.velocity.y = +5;
-                        resetBoundaryAndInteractableBool();
-
+                    if (boundary.hasCollision === true) {
+                        if (rectanglesCollide({
+                            rect1: { ...player, velocity: { x: 0, y: 5 } },
+                            rect2: boundary
+                        })) {
+                            player.velocity.y = 0;
+                            isObjectCollision(boundary);
+                            break;
+                        } else {
+                            player.velocity.y = +5;
+                            resetBoundaryAndInteractableBool();
+                        }
                     }
                 }
             } else if (keys.d.pressed && lastKey === "d") {
                 for (let i = 0; i < boundaries.length; i++) {
                     const boundary = boundaries[i];
-                    if (rectanglesCollide({
-                        rect1: { ...player, velocity: { x: 5, y: 0 } },
-                        rect2: boundary
-                    })) {
-                        player.velocity.x = 0;
-                        isObjectCollision(boundary);
-                        break;
-                    } else {
-                        player.velocity.x = 5;
-                        resetBoundaryAndInteractableBool();
+                    if (boundary.hasCollision === true) {
+                        if (rectanglesCollide({
+                            rect1: { ...player, velocity: { x: 5, y: 0 } },
+                            rect2: boundary
+                        })) {
+                            player.velocity.x = 0;
+                            isObjectCollision(boundary);
+                            break;
+                        } else {
+                            player.velocity.x = 5;
+                            resetBoundaryAndInteractableBool();
 
+                        }
                     }
                 }
             }
@@ -442,41 +385,31 @@ const Canvas = ({ ...props }) => {
             boundaries.forEach((boundary) => {
                 boundary.draw(spriteSheet)
 
-                if (
-                    rectanglesCollide({
-                        rect1: player,
-                        rect2: boundary
-                    })
-                ) {
-                    player.velocity.x = 0;
-                    player.velocity.y = 0;
+                if (boundary.hasCollision === true) {
+                    if (
+                        rectanglesCollide({
+                            rect1: player,
+                            rect2: boundary
+                        })
+                    ) {
+                        player.velocity.x = 0;
+                        player.velocity.y = 0;
+                    }
                 }
             })
 
             player.update();
-            // stairsText.draw();
-
-
             player.drawSprite(ctx, 100, 100);
-
-
-
 
             if (playerIsAtInteractableBoundary) {
                 const pressEPrompt = new Prompt("Press 'E'", (map[0].length * 32 / 2 - 40), (map.length * 32 / 2), canvas.current, ctx);
                 pressEPrompt.draw()
             } else {
-                // check in here if a onInteraction action has been fired
-                // if so then sendAn closeInteraction functio or something
-
                 if (keys.e.pressed) {
-                    // they just pressed e and have now moved, so fire an action to close the gameDataDisplay text
                     props.closeInteractionDisplay()
                     keys.e.pressed = false;
                 }
             }
-
-
 
             player.velocity.y = 0;
             player.velocity.x = 0;
@@ -492,9 +425,6 @@ const Canvas = ({ ...props }) => {
                 player.velocity.x = +5;
                 player.setDirection("right");
             }
-
-
-
         }
 
         animate();
@@ -528,7 +458,6 @@ const Canvas = ({ ...props }) => {
                         keys.e.pressed = true;
                         props.onInteraction(interactedBoundary);
                     }
-
                     break;
                 case "i":
                     if (playerIsAtInteractableBoundary) {
@@ -536,7 +465,6 @@ const Canvas = ({ ...props }) => {
                     } else {
                         props.showInventory();
                     }
-
                     break;
             }
         })
@@ -557,8 +485,6 @@ const Canvas = ({ ...props }) => {
                     break;
             }
         })
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 
     return (
