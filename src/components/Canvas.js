@@ -9,7 +9,6 @@ import { levelLoader } from "../../gameUtils/levelLoader";
 import { dataLoader } from "../../gameUtils/levelsData";
 
 const levelData = levelLoader();
-console.log("level data = ", levelData);
 
 const Canvas = ({ ...props }) => {
     const canvas = useRef();

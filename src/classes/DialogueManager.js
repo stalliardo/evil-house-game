@@ -44,10 +44,8 @@ export default class DialogueManager {
 
       case INTERACTION_TYPES.LOCKED_DOOR: {
         if (hasKey && !isUnlocked) {
-          console.log("top if");
           return { question: dialogueData.questionWithKey, options: dialogueData.options, keyRequired: dialogueData.keyRequired, lockName: dialogueData.lockName };
         } else if (!hasKey) {
-          console.log("else called");
           return { question: dialogueData.questionWithoutKey };
         } else if (isUnlocked) {
           return { question: " " }
@@ -62,6 +60,9 @@ export default class DialogueManager {
         return hasItem ? dialogueData.alreadyTakenResponse : dialogueData;
       }
 
+      case INTERACTION_TYPES.CHANGE_LEVEL: {
+        return dialogueData;
+      }
     }
   }
 

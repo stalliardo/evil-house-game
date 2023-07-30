@@ -64,6 +64,10 @@ const GameDataDisplay = ({ ...props }) => {
                 setLoadNextText(option.response);
                 break;
             }
+            case "changeLevel" : {
+                boundaryInstance[option.action](textOptions.levelName);
+                break;
+            }
         }
 
         if (option !== "useItem") {
@@ -73,7 +77,6 @@ const GameDataDisplay = ({ ...props }) => {
 
     return (
             <div style={{width: "800px", height: "100%"}}>
-                {console.log("text ops = ", textOptions)}
                     <button onClick={clearStorage}>Clear storage</button>
                     <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{props?.title}</h1>
                     <div style={{ border: "1px solid blue", display: "flex" }}>

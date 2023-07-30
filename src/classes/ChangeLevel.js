@@ -1,9 +1,8 @@
 import GameStateManager from "./GameStateManager";
 import Interaction from "./Interaction";
 
-const gameStateManager = new GameStateManager();
 
-export default class Door extends Interaction {
+export default class ChangeLevel extends Interaction {
   static width = 32;
   static height = 32;
 
@@ -19,13 +18,21 @@ export default class Door extends Interaction {
     this.height = 32;
   }
 
-  useItem(item, callback) {
-    switch (item) {
-      case "basementKey":
-        this.gameStateManager.set("basementDoor", "unlocked");
-        callback();
+  /**
+   * 
+   * @param {string} levelName This will be the value of the next level. Ie if changing level from the basement the value will be groundFloor
+   * @param {function} callback Any callback function required to handle additonal actions. 
+   */
+
+  changeLevel(levelName, callback) {
+    // switch might not be required, but will see as app grows
+    switch (levelName) {
+      case "groundFloor":
+        this.gameStateManager.set("level", levelName);
+        if(callback){
+            callback();
+        }
         break;
     }
   }
-
 }

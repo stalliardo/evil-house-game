@@ -1,5 +1,5 @@
 import GameStateManager from "@/classes/GameStateManager"
-import { basementMap } from "./map";
+import { basementMap, groundFloorMap } from "./map";
 
 export const levelLoader = () => {
     const gameStateManager = new GameStateManager();
@@ -10,6 +10,11 @@ export const levelLoader = () => {
     }
 
     // TODO - i dont think this will work as intended
-    return {level, map: `${level}Map`};
+    
+    switch(level){
+        case "groundFloor": {
+            return {level, map: groundFloorMap};
+        }
+    }
 
 }
