@@ -4,9 +4,10 @@ import InteractableOptionItem from './gamePrompts/InteractableOptionItem';
 import Inventory from './inventory/Inventory';
 import DialogueManager from '@/classes/DialogueManager';
 import GameStateManager from '@/classes/GameStateManager';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateLevelData } from '@/features/gameState/gameStateSlice';
 import { levelLoader } from '../../gameUtils/levelLoader';
+import TextModal from './modal/TextModal';
 
 const GameDataDisplay = ({ ...props }) => {
     const { boundaryInstance } = props;
@@ -16,14 +17,15 @@ const GameDataDisplay = ({ ...props }) => {
     const [textOptions, setTextOptions] = useState([]);
     const [showGameDataDisplay, setShowGameDataDisplay] = useState(false);
     const [loadNextText, setLoadNextText] = useState(false);
+    const showModal = useSelector((state) => state.modal.isOpen);
     const dispatch = useDispatch();
 
     const getTextOptions = () => {
-        if(loadNextText && props.showGameDataDisplay){
+        if (loadNextText && props.showGameDataDisplay) {
             setAdditionalText(loadNextText)
         }
 
-        if(!props.showGameDataDisplay){
+        if (!props.showGameDataDisplay) {
             setAdditionalText("");
             setLoadNextText(false);
         }
@@ -69,7 +71,7 @@ const GameDataDisplay = ({ ...props }) => {
                 setLoadNextText(option.response);
                 break;
             }
-            case "changeLevel" : {
+            case "changeLevel": {
                 boundaryInstance[option.action](textOptions.levelName, updateLevelState);
                 break;
             }
@@ -81,29 +83,34 @@ const GameDataDisplay = ({ ...props }) => {
     }
 
     return (
-            <div style={{width: "800px", height: "100%"}}>
-                    <button onClick={clearStorage}>Clear storage</button>
-                    <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{levelLoader().level}</h1>
-                    <div style={{ border: "1px solid blue", display: "flex" }}>
-                        {showInventory &&
-                            <div style={{ marginRight: "20px", border: "1px solid red", width: "50%" }}>
-                                <Inventory boundaryInstance={boundaryInstance} closeInventory={props.closeInventory} />
-                            </div>}
+        <>
+            {
+                showModal && <TextModal />
+            }
+            <div style={{ width: "800px", height: "100%" }}>
+                <button onClick={clearStorage}>Clear storage</button>
+                <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{levelLoader().level}</h1>
+                <div style={{ border: "1px solid blue", display: "flex" }}>
+                    {showInventory &&
+                        <div style={{ marginRight: "20px", border: "1px solid red", width: "50%" }}>
+                            <Inventory boundaryInstance={boundaryInstance} closeInventory={props.closeInventory} />
+                        </div>}
 
-                        <div style={{ marginRight: "20px", width: showInventory ? "40%" : "100%" }}>
+                    <div style={{ marginRight: "20px", width: showInventory ? "40%" : "100%" }}>
 
-                            {showGameDataDisplay &&
-                                <>
-                                    <p style={{ fontSize: "30px", marginTop: "30px" }} id="description" className={eduSABegginer.className}>{textOptions?.question || textOptions}</p>
-                                    {textOptions?.options?.map((option, index) => (
-                                        <InteractableOptionItem option={option} key={index} optionsSelected={optionsSelected} />
-                                    ))}
-                                </>}
+                        {showGameDataDisplay &&
+                            <>
+                                <p style={{ fontSize: "30px", marginTop: "30px" }} id="description" className={eduSABegginer.className}>{textOptions?.question || textOptions}</p>
+                                {textOptions?.options?.map((option, index) => (
+                                    <InteractableOptionItem option={option} key={index} optionsSelected={optionsSelected} />
+                                ))}
+                            </>}
 
-                        </div>
                     </div>
+                </div>
                 <p style={{ fontSize: "30px", marginTop: "30px", color: "lightgreen" }} className={eduSABegginer.className}>{additionalText}</p>
             </div>
+        </>
     )
 }
 
