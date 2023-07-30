@@ -34,7 +34,6 @@ export default class DialogueManager {
           return dialogueData.alreadyTakenResponse;
         } else if (hasKey && !isUnlocked) {
           return { question: dialogueData.questionWithKey, options: dialogueData.options, lootableItem: dialogueData.lootableItem, keyRequired: dialogueData.keyRequired }
-          // return dialogueData
         } else if (isUnlocked) {
           return { question: dialogueData.itemOpenedQuestion, options: dialogueData.itemOpenedOptions, lootableItem: dialogueData.lootableItem, keyRequired: dialogueData.keyRequired }
         } else {

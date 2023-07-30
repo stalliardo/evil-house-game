@@ -23,7 +23,6 @@ export default class Door extends Interaction {
     switch (item) {
       case "basementKey":
         this.gameStateManager.set("basementDoor", "unlocked");
-        callback();
         break;
     }
   }

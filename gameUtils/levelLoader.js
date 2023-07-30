@@ -8,8 +8,6 @@ export const levelLoader = () => {
     if(!level){
         return {level: "basement", map: basementMap}
     }
-
-    // TODO - i dont think this will work as intended
     
     switch(level){
         case "groundFloor": {

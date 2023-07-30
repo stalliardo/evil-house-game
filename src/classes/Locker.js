@@ -26,14 +26,12 @@ export default class Locker extends Interaction {
     }
 
     readItem() {
-        console.log("Red item called");
     }
 
     useItem(item, callback) {
         switch (item) {
             case "paperClip":
                 this.gameStateManager.set("basementLocker", "unlocked");
-                callback();
                 break;
         }
     }
