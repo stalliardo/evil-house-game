@@ -5,16 +5,14 @@ import { modalCallbacks } from '../../../gameUtils/modalActionHandler';
 const TextModal = () => {
 
   const modalData = useSelector(state => state.modal);
-  const { options, text, callbackAction, cancelCallback } = modalData;
+  const { options, text, confirmCallback, cancelCallback } = modalData;
   const dispatch = useDispatch();
 
   const handleConfirm = () => {
-    console.log("confrim called + callback action = ", callbackAction);
-    modalCallbacks[callbackAction](dispatch);
+    modalCallbacks[confirmCallback](dispatch);
   }
 
   const handleCancel = () => {
-    console.log("cancel called + callback action = ", cancelCallback);
     modalCallbacks[cancelCallback](dispatch);
   }
 

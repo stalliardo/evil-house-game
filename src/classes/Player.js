@@ -1,30 +1,3 @@
-// V1
-
-// export default class Player {
-//     static width = 32;
-//     static height = 32;
-
-//     constructor({ position, velocity, ctx }) {
-//         this.position = position;
-//         this.velocity = velocity;
-//         this.width = 32;
-//         this.height = 32;
-//         this.ctx = ctx;
-//     }
-
-//     draw() {
-//         this.ctx.fillStyle = "green";
-//         this.ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-//     }
-
-//     update() {
-//         this.draw();
-//         this.position.x += this.velocity.x;
-//         this.position.y += this.velocity.y;
-//     }
-// }
-
-
 export default class Player {
     static width = 32;
     static height = 32;

@@ -28,10 +28,10 @@ export const modalSlice = createSlice({
             state.text = action.payload.text;
             state.options.confirmButtonText = action.payload.confirmButtonText;
             state.options.cancelButtonText = action.payload.cancelButtonText;
-            state.callbackAction = action.payload.callbackAction;
+            state.confirmCallback = action.payload.confirmCallback;
+            state.cancelCallback = action.payload.cancelCallback;
         },
         closeModal: (state) => {
-            console.log("close modal called");
             state.isOpen = false;
         }
     },

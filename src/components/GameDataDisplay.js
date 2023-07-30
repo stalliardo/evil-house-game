@@ -36,22 +36,24 @@ const GameDataDisplay = ({ ...props }) => {
         setTextOptions(dialogueOptions);
     }
 
+    // TODO - reinstate
+    // useEffect(() => {
+    //     const hasPlayedPreviously = gameStateManager.has("level");
+    //     if (!hasPlayedPreviously) { // is players first time
+    //         dispatch(
+    //             loadModal({
+    //                 text: MODAL_TEXT.ENTER_GAME_TEXT,
+    //                 confirmButtonText: "Let the nightmare begin",
+    //                 confirmCallback: "close"
+    //             })
+    //         )
+    //     }
+    // }, [])
+
     useEffect(() => {
         setAdditionalText("");
         getTextOptions();
         setShowGameDataDisplay(props.showGameDataDisplay);
-        const hasPlayedPreviously = gameStateManager.has("level");
-
-        if (!hasPlayedPreviously) { // is players first time
-            dispatch(
-                loadModal({
-                    text: MODAL_TEXT.ENTER_GAME_TEXT,
-                    confirmButtonText: "Lets Go",
-                    confirmCallback: "close"
-                })
-            )
-        }
-
     }, [props.showGameDataDisplay, loadNextText])
 
 
@@ -69,7 +71,12 @@ const GameDataDisplay = ({ ...props }) => {
     const optionsSelected = (option) => {
         switch (option.action) {
             case "readItem": {
-                setAdditionalText(option.response);
+                // setAdditionalText(option.response);
+                dispatch(loadModal({
+                    text: {title: "", body: option.response},
+                    confirmButtonText: "close",
+                    confirmCallback: "close"
+                }))
                 break;
             }
             case "leaveItem": {
@@ -99,15 +106,12 @@ const GameDataDisplay = ({ ...props }) => {
 
     return (
         <>
-            {
-                showModal && <TextModal />
-            }
             <div style={{ width: "800px", height: "100%" }}>
                 <button onClick={clearStorage}>Clear storage</button>
                 <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{levelLoader().level}</h1>
-                <div style={{ border: "1px solid blue", display: "flex" }}>
+                <div style={{ display: "flex" }}>
                     {showInventory &&
-                        <div style={{ marginRight: "20px", border: "1px solid red", width: "50%" }}>
+                        <div style={{ marginRight: "20px", width: "50%" }}>
                             <Inventory boundaryInstance={boundaryInstance} closeInventory={props.closeInventory} />
                         </div>}
 
@@ -116,15 +120,20 @@ const GameDataDisplay = ({ ...props }) => {
                         {showGameDataDisplay &&
                             <>
                                 <p style={{ fontSize: "30px", marginTop: "30px" }} id="description" className={eduSABegginer.className}>{textOptions?.question || textOptions}</p>
-                                {textOptions?.options?.map((option, index) => (
-                                    <InteractableOptionItem option={option} key={index} optionsSelected={optionsSelected} />
-                                ))}
+                                <div style={{display: "flex", justifyContent: "space-between", marginTop: "20px"}}>
+                                    {textOptions?.options?.map((option, index) => (
+                                        <InteractableOptionItem option={option} key={index} optionsSelected={optionsSelected} />
+                                    ))}
+                                </div>
                             </>}
 
                     </div>
                 </div>
                 <p style={{ fontSize: "30px", marginTop: "30px", color: "lightgreen" }} className={eduSABegginer.className}>{additionalText}</p>
             </div>
+            {
+                showModal ? <TextModal /> : null
+            }
         </>
     )
 }

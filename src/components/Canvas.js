@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 
 import Prompt from "@/classes/Prompt";
 import SpriteAnimation from "@/classes/SpriteAnimation";
@@ -9,12 +9,14 @@ import { dataLoader } from "../../gameUtils/levelsData";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLevelData } from "@/features/gameState/gameStateSlice";
 
+
 const Canvas = ({ ...props }) => {
     const canvas = useRef();
     const [ctx, setCtx] = useState(null);
     const dispatch = useDispatch();
     const levelData = useSelector((state) => state.gameState);
-    const isModalOpen = useSelector(state => state.modal.isOpen);
+    // const isModalOpen = useSelector((state) => state.modal.isOpen);
+    // const isModalOpen = useSelector((state) => state.modal.isOpen);
 
     useEffect(() => {
         if (canvas.current) {
@@ -25,6 +27,7 @@ const Canvas = ({ ...props }) => {
         }
     }, []);
 
+        
     if (ctx !== null) {
         const keys = {
             w: {
@@ -49,8 +52,9 @@ const Canvas = ({ ...props }) => {
         let playerIsAtInteractableBoundary = false;
         const spriteSheet = new Image();
         spriteSheet.src = "dungeonTileset.png";
-        const player = new SpriteAnimation('allCharacters.png', 7, 4, 1, 2, { x: 200, y: 100 }, { x: 0, y: 0 }, ctx);
-
+                
+        const player = new SpriteAnimation('allCharacters.png', 7, 4, 1, 2, { x: 200, y: 100 }, { x: 0, y: 0 }, ctx);   
+               
         levelData.map.forEach((row, i) => {
             row.forEach((symbol, j) => {
                 if (dataLoader(levelData.level, symbol, i, j, ctx) !== undefined) {
@@ -85,7 +89,7 @@ const Canvas = ({ ...props }) => {
             requestAnimationFrame(animate);
             ctx.clearRect(0, 0, canvas.current.width, canvas.current.height)
 
-            if(!isModalOpen){
+            // if (!isModalOpen) {
                 if (keys.w.pressed && lastKey === "w") {
                     for (let i = 0; i < boundaries.length; i++) {
                         const boundary = boundaries[i];
@@ -103,9 +107,9 @@ const Canvas = ({ ...props }) => {
                             }
                         }
                     }
-    
+
                 } else if (keys.a.pressed && lastKey === "a") {
-    
+
                     for (let i = 0; i < boundaries.length; i++) {
                         const boundary = boundaries[i];
                         if (boundary.hasCollision === true) {
@@ -157,7 +161,7 @@ const Canvas = ({ ...props }) => {
                         }
                     }
                 }
-            }
+            // }
 
             boundaries.forEach((boundary) => {
                 boundary.draw(spriteSheet)
@@ -191,19 +195,19 @@ const Canvas = ({ ...props }) => {
             player.velocity.y = 0;
             player.velocity.x = 0;
 
-           if(!isModalOpen){
-            if (keys.w.pressed && lastKey === "w") {
-                player.velocity.y = -5;
-            } else if (keys.a.pressed && lastKey === "a") {
-                player.velocity.x = -5;
-                player.setDirection("left");
-            } else if (keys.s.pressed && lastKey === "s") {
-                player.velocity.y = +5;
-            } else if (keys.d.pressed && lastKey === "d") {
-                player.velocity.x = +5;
-                player.setDirection("right");
-            }
-           }
+            // if (!isModalOpen) {
+                if (keys.w.pressed && lastKey === "w") {
+                    player.velocity.y = -5;
+                } else if (keys.a.pressed && lastKey === "a") {
+                    player.velocity.x = -5;
+                    player.setDirection("left");
+                } else if (keys.s.pressed && lastKey === "s") {
+                    player.velocity.y = +5;
+                } else if (keys.d.pressed && lastKey === "d") {
+                    player.velocity.x = +5;
+                    player.setDirection("right");
+                }
+            // }
         }
 
         animate();
