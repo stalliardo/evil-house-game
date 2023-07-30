@@ -1,4 +1,4 @@
-const map = [
+export const basementMap = [
     ["1", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "2",],
     ["lw", "s", "s", "-", " ", " ", "locker1", " ", " ", " ", "locker2", " ", " ", "rw",],
     ["lw", " ", " ", "-", " ", " ", " ", " ", " ", " ", " ", " ", " ", "rw",],
@@ -11,4 +11,3 @@ const map = [
     ["3", "f", "f", "f", "f", "f", "f", "f", "f", "f", "f", "f", "f", "4",]
 ]
 
-export default map;
