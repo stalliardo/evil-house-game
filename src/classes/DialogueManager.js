@@ -17,9 +17,7 @@ export default class DialogueManager {
         dialogueData = BASEMENT_DIALOGUE_DATA[identifier];
         return this.filterDialogueData(dialogueData, instance);
       case "ground_floor":
-        // dialogueData = import('./ground_floor_dialogue_data.js').then((module) => module.default);
         break;
-      // Add cases for other levels if needed
     }
   }
 
@@ -31,10 +29,7 @@ export default class DialogueManager {
     const isUnlocked = this.gameStateManager.get(dialogueData.lockName) === "unlocked"; // the locked items name ie "locker"
 
     switch (interactionType) {
-
       case INTERACTION_TYPES.LOCKED_WITH_LOOT: {
-
-        // if they do then they have already looted this so return the lootedText
         if (hasItem) {
           return dialogueData.alreadyTakenResponse;
         } else if (hasKey && !isUnlocked) {
@@ -46,7 +41,6 @@ export default class DialogueManager {
           return { question: dialogueData.questionWithoutKey };
         }
       }
-
 
       case INTERACTION_TYPES.LOCKED_DOOR: {
         if (hasKey && !isUnlocked) {

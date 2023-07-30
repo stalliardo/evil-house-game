@@ -1,13 +1,9 @@
 import { eduSABegginer, slikScreen } from '@/app/layout';
 import React, { useEffect, useMemo, useState } from 'react'
-import styles from './GameDataDisplay.module.css'
 import InteractableOptionItem from './gamePrompts/InteractableOptionItem';
 import Inventory from './inventory/Inventory';
-
 import DialogueManager from '@/classes/DialogueManager';
 import GameStateManager from '@/classes/GameStateManager';
-
-const styles2 = { width: "800px", height: "100%", };
 
 const GameDataDisplay = ({ ...props }) => {
     const { boundaryInstance } = props;
@@ -24,7 +20,6 @@ const GameDataDisplay = ({ ...props }) => {
         }
 
         if(!props.showGameDataDisplay){
-            // display closed. Reset the additionalText amd loadNextValue.
             setAdditionalText("");
             setLoadNextText(false);
         }
@@ -77,7 +72,7 @@ const GameDataDisplay = ({ ...props }) => {
     }
 
     return (
-            <div style={styles2}>
+            <div style={{width: "800px", height: "100%"}}>
                 {console.log("text ops = ", textOptions)}
                     <button onClick={clearStorage}>Clear storage</button>
                     <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{props?.title}</h1>
