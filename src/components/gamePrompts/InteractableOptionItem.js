@@ -1,4 +1,3 @@
-import styles from './InteractableOptionItem.module.css';
 
 const InteractableOptionItem = ({...props}) => {
 
@@ -8,7 +7,7 @@ const InteractableOptionItem = ({...props}) => {
     props.optionsSelected(option);
   }
   return (
-    <div className="optionButton" onClick={handleClick}>{option.text}</div>
+    <button onClick={handleClick}>{option.text}</button>
   )
 }
 

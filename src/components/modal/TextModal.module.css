@@ -1,0 +1,62 @@
+.modalContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modalContentContainer {
+    width: 50%;
+    max-width: 70%;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #1b1b1b; /* Dark gray background */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Slightly stronger box shadow */
+    color: #fff; /* Text color for the modal content */
+    height: 700px;
+    overflow-y: scroll;
+    
+  }
+  .modalContentContainer h1 {
+    margin: 0 0 20px 0;
+    color: greenyellow;
+    
+  }
+    
+  .modalContentContainer p {
+    margin: 0;
+  }
+  .modalContentContainer pre {
+    white-space: pre-wrap;
+    font-size: 18px;
+  }
+  
+  .modalContentContainer button {
+    margin-top: 10px;
+    font-size: 30px;
+    color: greenyellow;
+    background-color: transparent;
+    border: 1px solid greenyellow;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .modalContentContainer button:hover {
+     /* Change background color on hover */
+    transform: scale(1.1); /* Scale up the button by 5% on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .buttonContainer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  

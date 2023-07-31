@@ -4,32 +4,51 @@ import InteractableOptionItem from './gamePrompts/InteractableOptionItem';
 import Inventory from './inventory/Inventory';
 import DialogueManager from '@/classes/DialogueManager';
 import GameStateManager from '@/classes/GameStateManager';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateLevelData } from '@/features/gameState/gameStateSlice';
 import { levelLoader } from '../../gameUtils/levelLoader';
+import TextModal from './modal/TextModal';
+import { loadModal, setTextAndDisplay } from '@/features/gameState/modalSlice';
+import { MODAL_TEXT } from '../../gameUtils/consts';
 
 const GameDataDisplay = ({ ...props }) => {
     const { boundaryInstance } = props;
     const [additionalText, setAdditionalText] = useState("");
     const { showInventory } = props;
     const dialogueManager = new DialogueManager();
+    const gameStateManager = new GameStateManager();
     const [textOptions, setTextOptions] = useState([]);
     const [showGameDataDisplay, setShowGameDataDisplay] = useState(false);
     const [loadNextText, setLoadNextText] = useState(false);
+    const showModal = useSelector((state) => state.modal.isOpen);
     const dispatch = useDispatch();
 
     const getTextOptions = () => {
-        if(loadNextText && props.showGameDataDisplay){
+        if (loadNextText && props.showGameDataDisplay) {
             setAdditionalText(loadNextText)
         }
 
-        if(!props.showGameDataDisplay){
+        if (!props.showGameDataDisplay) {
             setAdditionalText("");
             setLoadNextText(false);
         }
         const dialogueOptions = dialogueManager.loadDialogueDataForLevel(boundaryInstance?.level, boundaryInstance);
         setTextOptions(dialogueOptions);
     }
+
+    // TODO - reinstate
+    // useEffect(() => {
+    //     const hasPlayedPreviously = gameStateManager.has("level");
+    //     if (!hasPlayedPreviously) { // is players first time
+    //         dispatch(
+    //             loadModal({
+    //                 text: MODAL_TEXT.ENTER_GAME_TEXT,
+    //                 confirmButtonText: "Let the nightmare begin",
+    //                 confirmCallback: "close"
+    //             })
+    //         )
+    //     }
+    // }, [])
 
     useEffect(() => {
         setAdditionalText("");
@@ -40,7 +59,7 @@ const GameDataDisplay = ({ ...props }) => {
 
     const clearStorage = () => {
         // TODO remove
-        const gameStateManager = new GameStateManager();
+
         gameStateManager.delete()
 
     }
@@ -52,7 +71,12 @@ const GameDataDisplay = ({ ...props }) => {
     const optionsSelected = (option) => {
         switch (option.action) {
             case "readItem": {
-                setAdditionalText(option.response);
+                // setAdditionalText(option.response);
+                dispatch(loadModal({
+                    text: {title: "", body: option.response},
+                    confirmButtonText: "close",
+                    confirmCallback: "close"
+                }))
                 break;
             }
             case "leaveItem": {
@@ -69,7 +93,7 @@ const GameDataDisplay = ({ ...props }) => {
                 setLoadNextText(option.response);
                 break;
             }
-            case "changeLevel" : {
+            case "changeLevel": {
                 boundaryInstance[option.action](textOptions.levelName, updateLevelState);
                 break;
             }
@@ -81,29 +105,36 @@ const GameDataDisplay = ({ ...props }) => {
     }
 
     return (
-            <div style={{width: "800px", height: "100%"}}>
-                    <button onClick={clearStorage}>Clear storage</button>
-                    <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{levelLoader().level}</h1>
-                    <div style={{ border: "1px solid blue", display: "flex" }}>
-                        {showInventory &&
-                            <div style={{ marginRight: "20px", border: "1px solid red", width: "50%" }}>
-                                <Inventory boundaryInstance={boundaryInstance} closeInventory={props.closeInventory} />
-                            </div>}
+        <>
+            <div style={{ width: "800px", height: "100%" }}>
+                <button onClick={clearStorage}>Clear storage</button>
+                <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{levelLoader().level}</h1>
+                <div style={{ display: "flex" }}>
+                    {showInventory &&
+                        <div style={{ marginRight: "20px", width: "50%" }}>
+                            <Inventory boundaryInstance={boundaryInstance} closeInventory={props.closeInventory} />
+                        </div>}
 
-                        <div style={{ marginRight: "20px", width: showInventory ? "40%" : "100%" }}>
+                    <div style={{ marginRight: "20px", width: showInventory ? "40%" : "100%" }}>
 
-                            {showGameDataDisplay &&
-                                <>
-                                    <p style={{ fontSize: "30px", marginTop: "30px" }} id="description" className={eduSABegginer.className}>{textOptions?.question || textOptions}</p>
+                        {showGameDataDisplay &&
+                            <>
+                                <p style={{ fontSize: "30px", marginTop: "30px" }} id="description" className={eduSABegginer.className}>{textOptions?.question || textOptions}</p>
+                                <div style={{display: "flex", justifyContent: "space-between", marginTop: "20px"}}>
                                     {textOptions?.options?.map((option, index) => (
                                         <InteractableOptionItem option={option} key={index} optionsSelected={optionsSelected} />
                                     ))}
-                                </>}
+                                </div>
+                            </>}
 
-                        </div>
                     </div>
+                </div>
                 <p style={{ fontSize: "30px", marginTop: "30px", color: "lightgreen" }} className={eduSABegginer.className}>{additionalText}</p>
             </div>
+            {
+                showModal ? <TextModal /> : null
+            }
+        </>
     )
 }
 
