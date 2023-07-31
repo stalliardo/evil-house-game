@@ -46,13 +46,13 @@ const Canvas = ({ ...props }) => {
     let playerIsAtInteractableBoundary = false;
     const spriteSheet = new Image();
     spriteSheet.src = "dungeonTileset.png";
-    const player = new SpriteAnimation('allCharacters.png', 7, 4, 1, 2, { x: 200, y: 100 }, { x: 0, y: 0 }, ctx);
+    const player = new SpriteAnimation('allCharacters.png', 7, 4, 1, 2, { x: 200, y: 40 }, { x: 0, y: 0 }, ctx); // <- TODO this needs to be set via the levelData
 
     useEffect(() => {
         if (canvas.current) {
             setCtx(canvas.current.getContext("2d"));
-            canvas.current.width = 600;
-            canvas.current.height = 600;
+            canvas.current.width = 1200;
+            canvas.current.height = 800;
             dispatch(updateLevelData())
         }
     }, []);
@@ -283,7 +283,7 @@ const Canvas = ({ ...props }) => {
     })
 
     return (
-        <div style={{ width: "fit-content" }}>
+        <div style={{ width: "fit-content", border: "1px solid yellow" }}>
             <canvas ref={canvas}></canvas>
         </div>
     )
