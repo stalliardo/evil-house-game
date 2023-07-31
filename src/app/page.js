@@ -34,7 +34,6 @@ export default function Home() {
     setShowInventory(false);
   }
 
-  // useMemo used here to prevent the Canvas comp from re-rendering when setState is called
   const canvas = useMemo(() => <Canvas onInteraction={handleInteraction} closeInteractionDisplay={closeInteractionDisplay} showInventory={onShowInventory} closeInventory={closeInventory} />, []);
 
   return (
