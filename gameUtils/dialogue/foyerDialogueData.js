@@ -1,3 +1,5 @@
+import { FOYER_TEXT } from "../consts";
+
 export const FOYER_DIALOGUE_DATA = {
     brokenStairs: {
         requiredItems: ["hammer", "nails", "planks"],
@@ -12,12 +14,14 @@ export const FOYER_DIALOGUE_DATA = {
         ],
     },
 
-    changeLevelPrompt: {
-        question: "Well done. You have found the stairs that will lead you out of here. What will you do?",
-        levelName: "foyer",
+
+
+    journalOnTable: {
+        question: "When you examine the table, you notice it is a beautifully crafted antique, adorned with intricate carvings. On the table, there's a dusty old journal lying open. It seems like someone was using it recently. What will you do?.",
+        
         options: [
             {
-                text: "Use the stairs", action: "changeLevel", response: "You take the paper clip and put it in your inventory."
+                text: "Read", action: "readItem", response: FOYER_TEXT.JOURNAL_ONE
             },
         ],
     },

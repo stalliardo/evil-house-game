@@ -371,7 +371,7 @@ export const foyer = (symbol, i, j, ctx) => {
                     y: Boundary.height * i
                 },
 
-                "paperClipOnTable",
+                "journalOnTable",
                 "foyer",
                 {
                     row: 8,

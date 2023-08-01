@@ -29,7 +29,7 @@ export default class DialogueManager {
     const hasItem = this.gameStateManager.hasItem(dialogueData.lootableItem);
     const hasKey = this.gameStateManager.hasItem(dialogueData.keyRequired);
     const isUnlocked = this.gameStateManager.get(dialogueData.lockName) === "unlocked"; // the locked items name ie "locker"
-    const hasItems = this.gameStateManager.hasAllItems(dialogueData.requiredItems);
+    const hasItems = this.gameStateManager.hasAllItems(dialogueData.requiredItems || []);
 
     switch (interactionType) {
       case INTERACTION_TYPES.LOCKED_WITH_LOOT: {

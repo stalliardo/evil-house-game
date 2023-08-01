@@ -72,9 +72,8 @@ const GameDataDisplay = ({ ...props }) => {
     const optionsSelected = (option) => {
         switch (option.action) {
             case "readItem": {
-                // setAdditionalText(option.response);
                 dispatch(loadModal({
-                    text: {title: "", body: option.response},
+                    text: option.response,
                     confirmButtonText: "close",
                     confirmCallback: "close"
                 }))
