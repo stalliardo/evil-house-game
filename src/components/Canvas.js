@@ -52,7 +52,7 @@ const Canvas = ({ ...props }) => {
     useEffect(() => {
         if (canvas.current) {
             setCtx(canvas.current.getContext("2d"));
-            canvas.current.width = 1200;
+            canvas.current.width = 900;
             canvas.current.height = 800;
             dispatch(updateLevelData())
         }
@@ -284,7 +284,7 @@ const Canvas = ({ ...props }) => {
     })
 
     return (
-        <div style={{ width: "fit-content", border: "1px solid yellow" }}>
+        <div style={{ width: "fit-content" }}>
             <canvas ref={canvas}></canvas>
         </div>
     )

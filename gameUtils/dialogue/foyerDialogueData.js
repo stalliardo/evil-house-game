@@ -27,7 +27,7 @@ export const FOYER_DIALOGUE_DATA = {
     },
 
     paintingOnTable: {
-        question: "Another table with an intriguing painting resting upon it. As you glance at the painting you notice a small inscription discreetly tucked in the corner. What will you do?",
+        question: "Another table with an intriguing painting resting upon it. The painting depicts a clandestine gathering of '11' cloaked figures arranged in a circle, surrounded by arcane symbols and lit candles. Their faces are obscured, and they seem to be engaged in an esoteric ritual, raising their hands in unison as if channeling energy. The overall tone of the painting is eerie and enigmatic. You notice a small inscription discreetly tucked in the corner. What will you do?",
         
         options: [
             {
@@ -37,11 +37,12 @@ export const FOYER_DIALOGUE_DATA = {
     },
 
     bookshelf: {
-        question: "Another table with an intriguing painting resting upon it. As you glance at the painting you notice a small inscription discreetly tucked in the corner. What will you do?",
+        levelName: "foyer",
+        question: "An old bookshelf stands here, filled with dusty tomes and ancient scrolls. As you browse through the collection, one book catches your eye: 'Earth's Enchantment.' On the spine, you notice a faded number, but it's difficult to make out the exact page.",
         
         options: [
             {
-                text: "Read", action: "readItem", response: FOYER_TEXT.PAINTING_EARTH_ELEMENTAL_CLUE
+                text: "Select book", action: "useBookShelf", response: "hello"
             },
         ],
     },

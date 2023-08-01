@@ -93,6 +93,11 @@ const GameDataDisplay = ({ ...props }) => {
                 setLoadNextText(option.response);
                 break;
             }
+            case "useBookShelf": {
+                boundaryInstance[option.action](textOptions.levelName);
+                // load the bookshelf UI and hence activate the new gamePuzzleHandler
+                break;
+            }
             case "changeLevel": {
                 boundaryInstance[option.action](textOptions.levelName, updateLevelState);
                 break;

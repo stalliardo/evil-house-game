@@ -29,4 +29,12 @@ export default class BookShelf extends Interaction {
         );
     }
 
+    useBookShelf(levelName){
+        switch(levelName){
+            case "foyer": {
+                // TODO
+            }
+        }
+    }
+
 }
