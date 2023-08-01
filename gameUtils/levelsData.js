@@ -5,6 +5,7 @@ import Boundary from "@/classes/Boundary";
 import { INTERACTION_TYPES } from "./consts";
 import ChangeLevel from "@/classes/ChangeLevel";
 import FloorTile from "@/classes/FloorTile";
+import BookShelf from "@/classes/BookShelf";
 
 export const dataLoader = (level, symbol, i, j, ctx) => {
     switch (level) {
@@ -392,5 +393,19 @@ export const foyer = (symbol, i, j, ctx) => {
                     column: 3
                 }, ctx, false, INTERACTION_TYPES.SINGLE_ITEM
             )
+        case "bs":
+            return new BookShelf(
+                {
+                    x: Boundary.width * j,
+                    y: Boundary.height * i
+                },
+
+                "bookshelf",
+                "foyer",
+                {},
+
+                ctx, false, INTERACTION_TYPES.SINGLE_ITEM
+            )
     }
 }
+

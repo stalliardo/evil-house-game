@@ -36,4 +36,14 @@ export const FOYER_DIALOGUE_DATA = {
         ],
     },
 
+    bookshelf: {
+        question: "Another table with an intriguing painting resting upon it. As you glance at the painting you notice a small inscription discreetly tucked in the corner. What will you do?",
+        
+        options: [
+            {
+                text: "Read", action: "readItem", response: FOYER_TEXT.PAINTING_EARTH_ELEMENTAL_CLUE
+            },
+        ],
+    },
+
 }
