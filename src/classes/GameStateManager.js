@@ -36,6 +36,10 @@ export default class GameStateManager {
       return this.playerInventory.hasItem(item);
     }
 
+    hasAllItems(items) {
+      return this.playerInventory.hasAllItems(items);
+    }
+
     delete(){
       localStorage.removeItem("playerInventory");
       localStorage.removeItem("gameState");
@@ -65,6 +69,17 @@ export default class GameStateManager {
   
     hasItem(item) {
       return this.collectedItems.includes(item);
+    }
+
+    hasAllItems(items) {
+
+      let result = false;
+
+      if(this.collectedItems.every(e => items.includes(e))){
+        result = true
+      }
+
+      return result;
     }
   }
   

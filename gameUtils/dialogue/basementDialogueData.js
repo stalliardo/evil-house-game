@@ -64,7 +64,7 @@ export const BASEMENT_DIALOGUE_DATA = {
 
     changeLevelPrompt: {
         question: "Well done. You have found the stairs that will lead you out of here. What will you do?",
-        levelName: "groundFloor",
+        levelName: "foyer",
         options: [
             {
                 text: "Use the stairs", action: "changeLevel", response: "You take the paper clip and put it in your inventory."

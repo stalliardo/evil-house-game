@@ -54,6 +54,7 @@ const GameDataDisplay = ({ ...props }) => {
         setAdditionalText("");
         getTextOptions();
         setShowGameDataDisplay(props.showGameDataDisplay);
+
     }, [props.showGameDataDisplay, loadNextText])
 
 

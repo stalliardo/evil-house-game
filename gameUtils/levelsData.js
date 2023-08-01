@@ -9,7 +9,7 @@ import FloorTile from "@/classes/FloorTile";
 export const dataLoader = (level, symbol, i, j, ctx) => {
     switch (level) {
         case "basement": return basement(symbol, i, j, ctx);
-        case "groundFloor": return groundFloor(symbol, i, j, ctx);
+        case "foyer": return foyer(symbol, i, j, ctx);
     }
 }
 
@@ -201,7 +201,7 @@ export const basement = (symbol, i, j, ctx) => {
     }
 }
 
-export const groundFloor = (symbol, i, j, ctx) => {
+export const foyer = (symbol, i, j, ctx) => {
     switch (symbol) {
         case "-":
             return new Boundary({
@@ -224,7 +224,7 @@ export const groundFloor = (symbol, i, j, ctx) => {
                 },
 
                 "basementDoorLocked",
-                "basement",
+                "foyer",
                 {}, ctx, true, INTERACTION_TYPES.LOCKED_DOOR, "left"
             )
         case "locker1":
@@ -235,7 +235,7 @@ export const groundFloor = (symbol, i, j, ctx) => {
                 },
 
                 "lockerLockedWithPadLock",
-                "basement",
+                "foyer",
                 {
                     row: 8,
                     column: 5
@@ -249,7 +249,7 @@ export const groundFloor = (symbol, i, j, ctx) => {
                 },
 
                 "lockerWithNoteInShirt",
-                "basement",
+                "foyer",
                 {
                     row: 8,
                     column: 5
@@ -351,18 +351,18 @@ export const groundFloor = (symbol, i, j, ctx) => {
                 }
             })
         case "s":
-            return new ChangeLevel(
+            return new ChangeLevel( // TODO
                 {
                     x: Boundary.width * j,
                     y: Boundary.height * i
                 },
 
-                "changeLevelPrompt",
-                "basement",
+                "brokenStairs",
+                "foyer",
                 {
                     row: 3,
-                    column: 8
-                }, ctx, true, INTERACTION_TYPES.CHANGE_LEVEL
+                    column: 9
+                }, ctx, true, INTERACTION_TYPES.REQUIRES_ITEMS
             )
         case "t":
             return new Table(
@@ -372,7 +372,7 @@ export const groundFloor = (symbol, i, j, ctx) => {
                 },
 
                 "paperClipOnTable",
-                "basement",
+                "foyer",
                 {
                     row: 8,
                     column: 3

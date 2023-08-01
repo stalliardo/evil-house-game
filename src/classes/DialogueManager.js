@@ -1,5 +1,6 @@
 import { INTERACTION_TYPES } from '../../gameUtils/consts.js';
 import { BASEMENT_DIALOGUE_DATA } from '../../gameUtils/dialogue/basementDialogueData.js';
+import { FOYER_DIALOGUE_DATA } from '../../gameUtils/dialogue/foyerDialogueData.js';
 import GameStateManager from './GameStateManager.js';
 
 export default class DialogueManager {
@@ -9,24 +10,26 @@ export default class DialogueManager {
 
   loadDialogueDataForLevel(level, instance) {
     const identifier = instance?.dialogueIdentifier;
-
     let dialogueData = null;
 
     switch (level) {
       case "basement":
         dialogueData = BASEMENT_DIALOGUE_DATA[identifier];
         return this.filterDialogueData(dialogueData, instance);
-      case "ground_floor":
-        break;
+      case "foyer":
+        dialogueData = FOYER_DIALOGUE_DATA[identifier];
+        return this.filterDialogueData(dialogueData, instance);
     }
   }
 
 
   filterDialogueData(dialogueData, instance) {
+
     const interactionType = instance.interactionType;
     const hasItem = this.gameStateManager.hasItem(dialogueData.lootableItem);
     const hasKey = this.gameStateManager.hasItem(dialogueData.keyRequired);
     const isUnlocked = this.gameStateManager.get(dialogueData.lockName) === "unlocked"; // the locked items name ie "locker"
+    const hasItems = this.gameStateManager.hasAllItems(dialogueData.requiredItems);
 
     switch (interactionType) {
       case INTERACTION_TYPES.LOCKED_WITH_LOOT: {
@@ -61,6 +64,13 @@ export default class DialogueManager {
 
       case INTERACTION_TYPES.CHANGE_LEVEL: {
         return dialogueData;
+      }
+      case INTERACTION_TYPES.REQUIRES_ITEMS: {
+        if(hasItems){
+          return dialogueData; // TODO
+        } else {
+          return {question: dialogueData.questionWithoutItems}
+        }        
       }
     }
   }

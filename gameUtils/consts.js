@@ -9,7 +9,8 @@ export const INTERACTION_TYPES = {
     READ_ONLY: "readOnly",
     LOCKED_DOOR: "lockedDoor",
     SINGLE_ITEM: "singleItem", // ie paperClip on table top
-    CHANGE_LEVEL: "changeLevel"
+    CHANGE_LEVEL: "changeLevel",
+    REQUIRES_ITEMS: "requiresItems",
 }
 
 export const MODAL_TEXT = {
