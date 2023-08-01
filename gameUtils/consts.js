@@ -25,5 +25,9 @@ export const FOYER_TEXT = {
     JOURNAL_ONE: {
         title: "Journal Entry",
         body: "'Whitlock Manor.' Once home to the enigmatic Whitlock family, legends tell of their pursuit of the arcane arts and hidden artifacts of unimaginable power.\n\nWithin these walls, the Whitlocks sought forbidden knowledge and delved into the secrets of alchemy. Their ambition led them to discover four elemental artifacts—the Ember Stone, Aqua Pearl, Zephyr Feather, and Terra Crystal—each holding immense energy.\n\nRumors abound that unlocking the true potential of these artifacts could reveal the mansion's hidden secrets and grant unimaginable abilities to those who wield them."
+    },
+    PAINTING_EARTH_ELEMENTAL_CLUE: {
+        title: "",
+        body: "Amidst the four elements, one holds the power to unlock the way. Seek the gentle embrace of the earth, where roots intertwine with the soil and life flourishes. There, the first elemental artifact shall reveal itself."
     }
 }

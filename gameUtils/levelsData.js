@@ -21,7 +21,7 @@ export const basement = (symbol, i, j, ctx) => {
         //             x: Boundary.width * j,
         //             y: Boundary.height * i
         //         },
-                
+
         //     }, ctx)
         case "-":
             return new Boundary({
@@ -48,7 +48,7 @@ export const basement = (symbol, i, j, ctx) => {
                 {}, ctx, true, INTERACTION_TYPES.LOCKED_DOOR, "left"
             )
         case "locker1":
-           return new Locker(
+            return new Locker(
                 {
                     x: Boundary.width * j,
                     y: Boundary.height * i
@@ -60,7 +60,7 @@ export const basement = (symbol, i, j, ctx) => {
                     row: 8,
                     column: 5
                 }, ctx, true, INTERACTION_TYPES.LOCKED_WITH_LOOT)
-            
+
         case "locker2":
             return new Locker(
                 {
@@ -228,7 +228,7 @@ export const foyer = (symbol, i, j, ctx) => {
                 {}, ctx, true, INTERACTION_TYPES.LOCKED_DOOR, "left"
             )
         case "locker1":
-           return new Locker(
+            return new Locker(
                 {
                     x: Boundary.width * j,
                     y: Boundary.height * i
@@ -240,7 +240,7 @@ export const foyer = (symbol, i, j, ctx) => {
                     row: 8,
                     column: 5
                 }, ctx, true, INTERACTION_TYPES.LOCKED_WITH_LOOT)
-            
+
         case "locker2":
             return new Locker(
                 {
@@ -372,6 +372,20 @@ export const foyer = (symbol, i, j, ctx) => {
                 },
 
                 "journalOnTable",
+                "foyer",
+                {
+                    row: 8,
+                    column: 3
+                }, ctx, false, INTERACTION_TYPES.SINGLE_ITEM
+            )
+        case "t2":
+            return new Table(
+                {
+                    x: Boundary.width * j,
+                    y: Boundary.height * i
+                },
+
+                "paintingOnTable",
                 "foyer",
                 {
                     row: 8,
