@@ -51,11 +51,23 @@ const Canvas = ({ ...props }) => {
     useEffect(() => {
         if (canvas.current) {
             setCtx(canvas.current.getContext("2d"));
-            canvas.current.width = 1200;
+            canvas.current.width = 600; // small to text camera effect TODO
             canvas.current.height = 800;
             dispatch(updateLevelData())
         }
     }, []);
+
+
+
+
+
+
+
+
+
+   
+
+
 
     useEffect(() => {
         let animationFrameId;
@@ -67,6 +79,10 @@ const Canvas = ({ ...props }) => {
                     boundaries.push(dataLoader(levelData.level, symbol, i, j, ctx));
                 }
             })
+        })
+
+        boundaries.forEach((b) => {
+            console.log("b.position.x = ", b.position.x);
         })
 
         if (ctx) {
@@ -154,8 +170,55 @@ const Canvas = ({ ...props }) => {
                     }
                 }
 
+                // this will no longer be a viable way to draw the boundaries.
+                // As the levels get bigger i only want to draw the tiles that are in the camera view
+                // TODO
+                // So will need to calculate which tiles are in the view
+                // example a s the player moves to the right positive x the map needs to scroll to the left to give the effect
+                // say the canvase width is 1000
+                // and player is at x0
+                // and tile width is 32
+                // i will only want to get the tiles at player x(0) + canvas.width(1000);
+                // 1000 / 32 = 31.25 tiles
+
+                // but how will i load the tiles? Each boundary has a position x and y
+                // so will need to always get the boundaries within the 32 tiles plus the player x
+                // eg:  
+                    // player is at x 300
+                    // get the tiles if(tiles.x < player.x * canvas.wdith) return the tile and draw
+
+
                 boundaries.forEach((boundary) => {
+
+                    // if(boundary.position.x < player.position.x + canvas.current.width - 1000){
+                    //     console.log("called");
+                    // }
+                    
+                    // boundary.position.x += 1
+
+                   if(player.position.x >= canvas.current.width / 2){
+                     if(keys.d.pressed){
+                         boundary.position.x -= 4;
+
+                         // get the last boundary item and stop that at the edge
+
+                        //  stop scrolling when the players x is less than ??????? TBC TODO
+
+
+                        
+                        if(boundary.position.x >= canvas.current.width){
+                            // boundary.position.x = canvas.current.width
+                        }
+                    } else if(keys.a.pressed){
+                        boundary.position.x += 3;
+                    }
+                   } 
+                   //else if(player.position.x <= canvas.current.width / 2){
+
+                  // }
+
                     boundary.draw(spriteSheet)
+
 
                     if (boundary.hasCollision === true) {
                         if (
@@ -203,6 +266,7 @@ const Canvas = ({ ...props }) => {
         };
     }, [levelData, ctx]);
 
+
     function rectanglesCollide({ rect1, rect2 }) {
         return (
             rect1.position.y + rect1.velocity.y <= rect2.position.y + rect2.height && // top
@@ -246,6 +310,7 @@ const Canvas = ({ ...props }) => {
             case "d":
                 keys.d.pressed = true;
                 lastKey = "d";
+                console.log("player.x = ", player.position.x);
                 player.isFacingLeft = false;
                 props.closeInventory();
                 break;
