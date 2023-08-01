@@ -12,6 +12,7 @@ export const gameStateSlice = createSlice({
         updateLevelData: (state) => {
               state.level = levelLoader().level;
               state.map = levelLoader().map;
+              state.playerPosition = levelLoader().playerPosition;
         },
        
     },

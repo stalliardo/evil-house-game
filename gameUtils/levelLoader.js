@@ -6,12 +6,12 @@ export const levelLoader = () => {
     const level = gameStateManager.get("level");
 
     if(!level){
-        return {level: "basement", map: basementMap}
+        return {level: "basement", map: basementMap, playerPosition: {x: 300, y: 255}}
     }
     
     switch(level){
         case "groundFloor": {
-            return {level, map: groundFloorMap};
+            return {level, map: groundFloorMap, playerPosition: {x: 420, y: 630}};
         }
     }
 

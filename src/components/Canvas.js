@@ -46,7 +46,8 @@ const Canvas = ({ ...props }) => {
     let playerIsAtInteractableBoundary = false;
     const spriteSheet = new Image();
     spriteSheet.src = "dungeonTileset.png";
-    const player = new SpriteAnimation('allCharacters.png', 7, 4, 1, 2, { x: 200, y: 40 }, { x: 0, y: 0 }, ctx); // <- TODO this needs to be set via the levelData
+
+    const player = new SpriteAnimation('allCharacters.png', 7, 4, 1, 2, {x: levelData.playerPosition?.x, y: levelData.playerPosition?.y}, { x: 0, y: 0 }, ctx); // <- TODO this needs to be set via the levelData
 
     useEffect(() => {
         if (canvas.current) {
