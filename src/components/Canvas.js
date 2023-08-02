@@ -14,14 +14,24 @@ const Canvas = ({ ...props }) => {
 
     const [ctx, setCtx] = useState(null);
     const dispatch = useDispatch();
-    const levelData = useSelector((state) => state.gameState);
+    const levelData = useSelector((state) => state.gameState.levelData);
     const isModalOpen = useSelector((state) => state.modal.isOpen);
     const isModalOpenRef = useRef(null);
+
+    const isPuzzleInProgress = useSelector((state) => state.gameState.puzzleInProgress);
+    const isPuzzleInProgressRef = useRef(null);
 
     useEffect(() => {
         // .current set so as not to call a rerender
         isModalOpenRef.current = isModalOpen;
     }, [isModalOpen]);
+
+    useEffect(() => {
+        // .current set so as not to call a rerender
+        isPuzzleInProgressRef.current = isPuzzleInProgress;
+    }, [isPuzzleInProgress]);
+
+
 
     const keys = {
         w: {
@@ -52,7 +62,7 @@ const Canvas = ({ ...props }) => {
     useEffect(() => {
         if (canvas.current) {
             setCtx(canvas.current.getContext("2d"));
-            canvas.current.width = 1200;
+            canvas.current.width = 900;
             canvas.current.height = 800;
             dispatch(updateLevelData())
         }
@@ -76,7 +86,7 @@ const Canvas = ({ ...props }) => {
                 animationFrameId = requestAnimationFrame(animate);
                 ctx.clearRect(0, 0, canvas.current.width, canvas.current.height)
 
-                if (isModalOpenRef.current === false) {
+                if (isModalOpenRef.current === false && isPuzzleInProgressRef.current === false) {
                     {
                         if (keys.w.pressed && lastKey === "w") {
                             for (let i = 0; i < boundaries.length; i++) {
@@ -284,7 +294,7 @@ const Canvas = ({ ...props }) => {
     })
 
     return (
-        <div style={{ width: "fit-content", border: "1px solid yellow" }}>
+        <div style={{ width: "fit-content" }}>
             <canvas ref={canvas}></canvas>
         </div>
     )

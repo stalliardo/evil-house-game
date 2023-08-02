@@ -18,13 +18,13 @@ export default class ChangeLevel extends Interaction {
 
   /**
    * 
-   * @param {string} levelName This will be the value of the next level. Ie if changing level from the basement the value will be groundFloor
+   * @param {string} levelName This will be the value of the next level. Ie if changing level from the basement the value will be foyer
    * @param {function} callback Any callback function required to handle additonal actions. 
    */
 
   changeLevel(levelName, callback) {
     switch (levelName) {
-      case "groundFloor": {
+      case "foyer": {
         this.gameStateManager.set("level", levelName);
         callback();
         break;

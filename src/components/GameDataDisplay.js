@@ -5,11 +5,12 @@ import Inventory from './inventory/Inventory';
 import DialogueManager from '@/classes/DialogueManager';
 import GameStateManager from '@/classes/GameStateManager';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateLevelData } from '@/features/gameState/gameStateSlice';
+import { setPuzzleInProgress, updateLevelData } from '@/features/gameState/gameStateSlice';
 import { levelLoader } from '../../gameUtils/levelLoader';
 import TextModal from './modal/TextModal';
 import { loadModal, setTextAndDisplay } from '@/features/gameState/modalSlice';
 import { MODAL_TEXT } from '../../gameUtils/consts';
+import GamePuzzleHandler from './gamePuzzles/GamePuzzleHandler';
 
 const GameDataDisplay = ({ ...props }) => {
     const { boundaryInstance } = props;
@@ -21,6 +22,9 @@ const GameDataDisplay = ({ ...props }) => {
     const [showGameDataDisplay, setShowGameDataDisplay] = useState(false);
     const [loadNextText, setLoadNextText] = useState(false);
     const showModal = useSelector((state) => state.modal.isOpen);
+    const showGamePuzzleHandler = useSelector((state) => state.gameState.puzzleInProgress);
+    const level = useSelector((state) => state.gameState.levelData.level);
+
     const dispatch = useDispatch();
 
     const getTextOptions = () => {
@@ -50,18 +54,24 @@ const GameDataDisplay = ({ ...props }) => {
     //     }
     // }, [])
 
+ 
+
     useEffect(() => {
         setAdditionalText("");
         getTextOptions();
         setShowGameDataDisplay(props.showGameDataDisplay);
+
     }, [props.showGameDataDisplay, loadNextText])
 
 
     const clearStorage = () => {
-        // TODO remove
-
+        // TODO remov
         gameStateManager.delete()
 
+    }
+
+    const clearStorageForLevel = () => {
+        gameStateManager.deleteLevelData(level);
     }
 
     const updateLevelState = () => {
@@ -71,9 +81,8 @@ const GameDataDisplay = ({ ...props }) => {
     const optionsSelected = (option) => {
         switch (option.action) {
             case "readItem": {
-                // setAdditionalText(option.response);
                 dispatch(loadModal({
-                    text: {title: "", body: option.response},
+                    text: option.response,
                     confirmButtonText: "close",
                     confirmCallback: "close"
                 }))
@@ -93,6 +102,12 @@ const GameDataDisplay = ({ ...props }) => {
                 setLoadNextText(option.response);
                 break;
             }
+            case "useBookShelf": {
+                boundaryInstance[option.action](textOptions.levelName);
+                setShowGameDataDisplay(false);
+                dispatch(setPuzzleInProgress("bookshelf"));
+                break;
+            }
             case "changeLevel": {
                 boundaryInstance[option.action](textOptions.levelName, updateLevelState);
                 break;
@@ -107,25 +122,36 @@ const GameDataDisplay = ({ ...props }) => {
     return (
         <>
             <div style={{ width: "800px", height: "100%" }}>
-                <button onClick={clearStorage}>Clear storage</button>
+                <button onClick={clearStorage}>Clear Storage</button>
+                <button onClick={clearStorageForLevel}>Clear Level</button>
                 <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{levelLoader().level}</h1>
-                <div style={{ display: "flex" }}>
-                    {showInventory &&
-                        <div style={{ marginRight: "20px", width: "50%" }}>
-                            <Inventory boundaryInstance={boundaryInstance} closeInventory={props.closeInventory} />
-                        </div>}
 
-                    <div style={{ marginRight: "20px", width: showInventory ? "40%" : "100%" }}>
+
+                <div style={{ display: "flex" }}>
+                    {/* {showInventory &&
+                        <div style={{ marginRight: "20px", width: "100%" }}>
+                            <Inventory boundaryInstance={boundaryInstance} closeInventory={props.closeInventory} />
+                        </div>
+                    } */}
+                    {showGamePuzzleHandler &&
+                        <div style={{ marginRight: "20px", width: "100%" }}>
+                            <GamePuzzleHandler boundaryInstance={boundaryInstance}/>
+                        </div>
+                    }
+
+                    <div style={{ marginRight: "20px", width: showInventory || showGamePuzzleHandler  ? "0%" : "100%" }}>
 
                         {showGameDataDisplay &&
+                            !showGamePuzzleHandler &&
                             <>
                                 <p style={{ fontSize: "30px", marginTop: "30px" }} id="description" className={eduSABegginer.className}>{textOptions?.question || textOptions}</p>
-                                <div style={{display: "flex", justifyContent: "space-between", marginTop: "20px"}}>
+                                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
                                     {textOptions?.options?.map((option, index) => (
                                         <InteractableOptionItem option={option} key={index} optionsSelected={optionsSelected} />
                                     ))}
                                 </div>
-                            </>}
+                            </>
+                        }
 
                     </div>
                 </div>

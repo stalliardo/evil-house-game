@@ -5,11 +5,12 @@ import Boundary from "@/classes/Boundary";
 import { INTERACTION_TYPES } from "./consts";
 import ChangeLevel from "@/classes/ChangeLevel";
 import FloorTile from "@/classes/FloorTile";
+import BookShelf from "@/classes/BookShelf";
 
 export const dataLoader = (level, symbol, i, j, ctx) => {
     switch (level) {
         case "basement": return basement(symbol, i, j, ctx);
-        case "groundFloor": return groundFloor(symbol, i, j, ctx);
+        case "foyer": return foyer(symbol, i, j, ctx);
     }
 }
 
@@ -21,7 +22,7 @@ export const basement = (symbol, i, j, ctx) => {
         //             x: Boundary.width * j,
         //             y: Boundary.height * i
         //         },
-                
+
         //     }, ctx)
         case "-":
             return new Boundary({
@@ -48,7 +49,7 @@ export const basement = (symbol, i, j, ctx) => {
                 {}, ctx, true, INTERACTION_TYPES.LOCKED_DOOR, "left"
             )
         case "locker1":
-           return new Locker(
+            return new Locker(
                 {
                     x: Boundary.width * j,
                     y: Boundary.height * i
@@ -60,7 +61,7 @@ export const basement = (symbol, i, j, ctx) => {
                     row: 8,
                     column: 5
                 }, ctx, true, INTERACTION_TYPES.LOCKED_WITH_LOOT)
-            
+
         case "locker2":
             return new Locker(
                 {
@@ -201,7 +202,7 @@ export const basement = (symbol, i, j, ctx) => {
     }
 }
 
-export const groundFloor = (symbol, i, j, ctx) => {
+export const foyer = (symbol, i, j, ctx) => {
     switch (symbol) {
         case "-":
             return new Boundary({
@@ -224,23 +225,23 @@ export const groundFloor = (symbol, i, j, ctx) => {
                 },
 
                 "basementDoorLocked",
-                "basement",
+                "foyer",
                 {}, ctx, true, INTERACTION_TYPES.LOCKED_DOOR, "left"
             )
         case "locker1":
-           return new Locker(
+            return new Locker(
                 {
                     x: Boundary.width * j,
                     y: Boundary.height * i
                 },
 
                 "lockerLockedWithPadLock",
-                "basement",
+                "foyer",
                 {
                     row: 8,
                     column: 5
                 }, ctx, true, INTERACTION_TYPES.LOCKED_WITH_LOOT)
-            
+
         case "locker2":
             return new Locker(
                 {
@@ -249,7 +250,7 @@ export const groundFloor = (symbol, i, j, ctx) => {
                 },
 
                 "lockerWithNoteInShirt",
-                "basement",
+                "foyer",
                 {
                     row: 8,
                     column: 5
@@ -351,18 +352,18 @@ export const groundFloor = (symbol, i, j, ctx) => {
                 }
             })
         case "s":
-            return new ChangeLevel(
+            return new ChangeLevel( // TODO
                 {
                     x: Boundary.width * j,
                     y: Boundary.height * i
                 },
 
-                "changeLevelPrompt",
-                "basement",
+                "brokenStairs",
+                "foyer",
                 {
                     row: 3,
-                    column: 8
-                }, ctx, true, INTERACTION_TYPES.CHANGE_LEVEL
+                    column: 9
+                }, ctx, true, INTERACTION_TYPES.REQUIRES_ITEMS
             )
         case "t":
             return new Table(
@@ -371,12 +372,40 @@ export const groundFloor = (symbol, i, j, ctx) => {
                     y: Boundary.height * i
                 },
 
-                "paperClipOnTable",
-                "basement",
+                "journalOnTable",
+                "foyer",
                 {
                     row: 8,
                     column: 3
                 }, ctx, false, INTERACTION_TYPES.SINGLE_ITEM
             )
+        case "t2":
+            return new Table(
+                {
+                    x: Boundary.width * j,
+                    y: Boundary.height * i
+                },
+
+                "paintingOnTable",
+                "foyer",
+                {
+                    row: 8,
+                    column: 3
+                }, ctx, false, INTERACTION_TYPES.SINGLE_ITEM
+            )
+        case "bs":
+            return new BookShelf(
+                {
+                    x: Boundary.width * j,
+                    y: Boundary.height * i
+                },
+
+                "bookshelf",
+                "foyer",
+                {},
+
+                ctx, false, INTERACTION_TYPES.SINGLE_ITEM
+            )
     }
 }
+

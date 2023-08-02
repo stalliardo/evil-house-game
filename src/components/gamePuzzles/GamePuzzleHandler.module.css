@@ -1,0 +1,9 @@
+.container {
+    padding: 10px;
+    background-color: rgb(48, 48, 48);
+    height: fit-content;
+}
+
+.container h3 {
+    text-align: center;
+}

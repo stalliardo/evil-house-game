@@ -5,19 +5,27 @@ export const gameStateSlice = createSlice({
     name: 'gameState',
     initialState: {
         value: 0,
-        level: null,
-        map: null
+        levelData: {
+            level: null,
+            map: [],
+            playerPosition: {x: null, y: null}
+        },
+        map: null,
+        puzzleInProgress: false
     },
     reducers: {
         updateLevelData: (state) => {
-              state.level = levelLoader().level;
-              state.map = levelLoader().map;
-              state.playerPosition = levelLoader().playerPosition;
+              state.levelData.level = levelLoader().level;
+              state.levelData.map = levelLoader().map;
+              state.levelData.playerPosition = levelLoader().playerPosition;
         },
+        setPuzzleInProgress: (state, action) => {
+            state.puzzleInProgress = action.payload;
+        }
        
     },
 })
 
-export const { updateLevelData } = gameStateSlice.actions
+export const { updateLevelData, setPuzzleInProgress } = gameStateSlice.actions
 
 export default gameStateSlice.reducer;

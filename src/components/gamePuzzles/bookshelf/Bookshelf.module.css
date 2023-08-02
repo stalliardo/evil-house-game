@@ -1,0 +1,73 @@
+.container {
+    height: 500px;
+    overflow-y: scroll;
+}
+
+.container button {
+    padding: 5px;
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+.container h2 {
+    text-align: center;
+}
+
+.bookTextContainer {
+    width: 80%;
+    background-color: rgb(228, 198, 159);
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.bookTextContainer pre {
+    white-space: pre-wrap;
+    color: black;
+    font-weight: 600;
+    font-size: 17px;
+}
+
+.textContainer {
+    width: 80%;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.inputContainer {
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+}
+
+.bookSelectContainer input {
+    padding: 10px;
+    border: 1px solid greenyellow;
+    width: 50%;
+    font-size: 40px;
+}
+
+.bookSelectContainer label {
+    margin-bottom: 10px;
+
+}
+
+.bookItem {
+    width: fit-content;
+    margin-top: 10px;
+}
+
+.bookItem:hover {
+    cursor: pointer;
+    color: grey;
+}
+
+.completionTextContainer {
+    width: 80%;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 10px;
+}
