@@ -23,6 +23,7 @@ const GameDataDisplay = ({ ...props }) => {
     const [loadNextText, setLoadNextText] = useState(false);
     const showModal = useSelector((state) => state.modal.isOpen);
     const showGamePuzzleHandler = useSelector((state) => state.gameState.puzzleInProgress);
+    const level = useSelector((state) => state.gameState.levelData.level);
 
     const dispatch = useDispatch();
 
@@ -64,10 +65,13 @@ const GameDataDisplay = ({ ...props }) => {
 
 
     const clearStorage = () => {
-        // TODO remove
-
+        // TODO remov
         gameStateManager.delete()
 
+    }
+
+    const clearStorageForLevel = () => {
+        gameStateManager.deleteLevelData(level);
     }
 
     const updateLevelState = () => {
@@ -118,7 +122,8 @@ const GameDataDisplay = ({ ...props }) => {
     return (
         <>
             <div style={{ width: "800px", height: "100%" }}>
-                <button onClick={clearStorage}>Clear storage</button>
+                <button onClick={clearStorage}>Clear Storage</button>
+                <button onClick={clearStorageForLevel}>Clear Level</button>
                 <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{levelLoader().level}</h1>
 
 
@@ -130,7 +135,7 @@ const GameDataDisplay = ({ ...props }) => {
                     } */}
                     {showGamePuzzleHandler &&
                         <div style={{ marginRight: "20px", width: "100%" }}>
-                            <GamePuzzleHandler boundaryInstance={boundaryInstance} closeInventory={props.closeInventory} />
+                            <GamePuzzleHandler boundaryInstance={boundaryInstance}/>
                         </div>
                     }
 

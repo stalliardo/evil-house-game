@@ -31,9 +31,18 @@ export default class GameStateManager {
       this.playerInventory.collectItem(item);
       this.saveToLocalStorage();
     }
+
+    addToLevelInventory(data){
+      this.playerInventory.collectLevelItem(data);
+      this.saveToLocalStorage();
+    }
   
     hasItem(item) {
       return this.playerInventory.hasItem(item);
+    }
+
+    hasItemForLevel(data){
+      return this.playerInventory.hasItemForLevel(data);
     }
 
     hasAllItems(items) {
@@ -43,6 +52,10 @@ export default class GameStateManager {
     delete(){
       localStorage.removeItem("playerInventory");
       localStorage.removeItem("gameState");
+    }
+    
+    deleteLevelData(level){
+      this.playerInventory.deleteLevelData(level);
     }
   }
   
@@ -66,13 +79,33 @@ export default class GameStateManager {
       this.collectedItems.push(item);
       this.saveToLocalStorage();
     }
+
+    collectLevelItem(data){
+      this.loadFromLocalStorage();
+      const itemsForLevel = this.collectedItems.find((i) => i?.level === data.level) || [];
+      if(itemsForLevel.length){
+        itemsForLevel.items.push(...data.items);
+      } else {
+        this.collectedItems.push({level: data.level, items: data.items})
+      }
+
+      this.saveToLocalStorage();
+    }
   
     hasItem(item) {
       return this.collectedItems.includes(item);
     }
 
-    hasAllItems(items) {
+    hasItemForLevel(data){
+      const itemsForLevel = this.collectedItems.find((i) => i?.level === data.level) || [];
 
+      if(!itemsForLevel.items) {
+        return false;
+      }
+      return itemsForLevel.items.includes(data.item);
+    }
+
+    hasAllItems(items) {
       let result = false;
 
       if(this.collectedItems.every(e => items.includes(e))){
@@ -80,6 +113,20 @@ export default class GameStateManager {
       }
 
       return result;
+    }
+
+    deleteLevelData(level){
+      if(!this.collectedItems.length){
+        return;
+      }
+
+      const dataToDelete = this.collectedItems.find((i) => i?.level === level) || [];
+      const index = this.collectedItems.indexOf(dataToDelete);
+
+      if(index >= 0){
+       this.collectedItems.splice(index, 1)
+        this.saveToLocalStorage();
+      }    
     }
   }
   
