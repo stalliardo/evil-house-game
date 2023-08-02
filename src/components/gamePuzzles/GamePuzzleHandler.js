@@ -11,7 +11,7 @@ const GamePuzzleHandler = () => {
 
   const getPuzzleComponent = () => {
     switch(puzzleInProgress) {
-      case "foyerBookshelfPuzzle": {
+      case "bookshelf": {
         return <Bookshelf />
       }
   

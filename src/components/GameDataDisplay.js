@@ -101,7 +101,7 @@ const GameDataDisplay = ({ ...props }) => {
             case "useBookShelf": {
                 boundaryInstance[option.action](textOptions.levelName);
                 setShowGameDataDisplay(false);
-                dispatch(setPuzzleInProgress("foyerBookshelfPuzzle"));
+                dispatch(setPuzzleInProgress("bookshelf"));
                 break;
             }
             case "changeLevel": {

@@ -9,17 +9,31 @@
     margin-left: 10px;
 }
 
-.bookSelectContainer h2{
+.container h2 {
     text-align: center;
 }
 
+.textContainer {
+    width: 80%;
+    background-color: rgb(228, 198, 159);
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.textContainer pre {
+    white-space: pre-wrap;
+    color: black;
+    font-weight: 600;
+    font-size: 17px;
+}
 
 .inputContainer {
     margin: 30px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 50%;    
+    width: 50%;
 }
 
 .bookSelectContainer input {
@@ -40,6 +54,6 @@
 }
 
 .bookItem:hover {
- cursor: pointer;
- color: grey;
+    cursor: pointer;
+    color: grey;
 }

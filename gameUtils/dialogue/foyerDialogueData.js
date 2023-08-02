@@ -17,7 +17,7 @@ export const FOYER_DIALOGUE_DATA = {
     
 
     journalOnTable: {
-        question: "When you examine the table, you notice it is a beautifully crafted antique, adorned with intricate carvings. On the table, there's a dusty old journal lying open. It seems like someone was using it recently. What will you do?.",
+        question: "When you examine the table, you notice it is a beautifully crafted antique, adorned with intricate carvings. On the table, there's an old journal lying open. It seems like someone was using it recently. What will you do?.",
         
         options: [
             {
@@ -27,7 +27,7 @@ export const FOYER_DIALOGUE_DATA = {
     },
 
     paintingOnTable: {
-        question: "Another table with an intriguing painting resting upon it. The painting depicts a clandestine gathering of '13' cloaked figures arranged in a circle, surrounded by arcane symbols and lit candles. Their faces are obscured, and they seem to be engaged in an esoteric ritual, raising their hands in unison as if channeling energy. The overall tone of the painting is eerie and enigmatic. You notice a small inscription discreetly tucked in the corner. What will you do?",
+        question: "Another table with an intriguing painting resting upon it. The painting depicts a gathering of '13' cloaked figures arranged in a circle, surrounded by arcane symbols and lit candles. Their faces are obscured, and they seem to be engaged in a ritual, raising their hands in unison as if channeling energy. The overall tone of the painting is eerie. You notice a small inscription discreetly tucked in the corner. What will you do?",
         
         options: [
             {
