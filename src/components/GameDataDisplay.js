@@ -5,11 +5,12 @@ import Inventory from './inventory/Inventory';
 import DialogueManager from '@/classes/DialogueManager';
 import GameStateManager from '@/classes/GameStateManager';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateLevelData } from '@/features/gameState/gameStateSlice';
+import { setPuzzleInProgress, updateLevelData } from '@/features/gameState/gameStateSlice';
 import { levelLoader } from '../../gameUtils/levelLoader';
 import TextModal from './modal/TextModal';
 import { loadModal, setTextAndDisplay } from '@/features/gameState/modalSlice';
 import { MODAL_TEXT } from '../../gameUtils/consts';
+import GamePuzzleHandler from './gamePuzzles/GamePuzzleHandler';
 
 const GameDataDisplay = ({ ...props }) => {
     const { boundaryInstance } = props;
@@ -21,6 +22,8 @@ const GameDataDisplay = ({ ...props }) => {
     const [showGameDataDisplay, setShowGameDataDisplay] = useState(false);
     const [loadNextText, setLoadNextText] = useState(false);
     const showModal = useSelector((state) => state.modal.isOpen);
+    const showGamePuzzleHandler = useSelector((state) => state.gameState.puzzleInProgress);
+
     const dispatch = useDispatch();
 
     const getTextOptions = () => {
@@ -49,6 +52,8 @@ const GameDataDisplay = ({ ...props }) => {
     //         )
     //     }
     // }, [])
+
+ 
 
     useEffect(() => {
         setAdditionalText("");
@@ -95,7 +100,8 @@ const GameDataDisplay = ({ ...props }) => {
             }
             case "useBookShelf": {
                 boundaryInstance[option.action](textOptions.levelName);
-                // load the bookshelf UI and hence activate the new gamePuzzleHandler
+                setShowGameDataDisplay(false);
+                dispatch(setPuzzleInProgress("foyerBookshelfPuzzle"));
                 break;
             }
             case "changeLevel": {
@@ -114,23 +120,33 @@ const GameDataDisplay = ({ ...props }) => {
             <div style={{ width: "800px", height: "100%" }}>
                 <button onClick={clearStorage}>Clear storage</button>
                 <h1 className={slikScreen.className} style={{ color: "greenyellow" }}>{levelLoader().level}</h1>
-                <div style={{ display: "flex" }}>
-                    {showInventory &&
-                        <div style={{ marginRight: "20px", width: "50%" }}>
-                            <Inventory boundaryInstance={boundaryInstance} closeInventory={props.closeInventory} />
-                        </div>}
 
-                    <div style={{ marginRight: "20px", width: showInventory ? "40%" : "100%" }}>
+
+                <div style={{ display: "flex" }}>
+                    {/* {showInventory &&
+                        <div style={{ marginRight: "20px", width: "100%" }}>
+                            <Inventory boundaryInstance={boundaryInstance} closeInventory={props.closeInventory} />
+                        </div>
+                    } */}
+                    {showGamePuzzleHandler &&
+                        <div style={{ marginRight: "20px", width: "50%" }}>
+                            <GamePuzzleHandler boundaryInstance={boundaryInstance} closeInventory={props.closeInventory} />
+                        </div>
+                    }
+
+                    <div style={{ marginRight: "20px", width: showInventory || showGamePuzzleHandler  ? "40%" : "100%" }}>
 
                         {showGameDataDisplay &&
+                            !showGamePuzzleHandler &&
                             <>
                                 <p style={{ fontSize: "30px", marginTop: "30px" }} id="description" className={eduSABegginer.className}>{textOptions?.question || textOptions}</p>
-                                <div style={{display: "flex", justifyContent: "space-between", marginTop: "20px"}}>
+                                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
                                     {textOptions?.options?.map((option, index) => (
                                         <InteractableOptionItem option={option} key={index} optionsSelected={optionsSelected} />
                                     ))}
                                 </div>
-                            </>}
+                            </>
+                        }
 
                     </div>
                 </div>
