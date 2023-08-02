@@ -27,7 +27,7 @@ export const FOYER_DIALOGUE_DATA = {
     },
 
     paintingOnTable: {
-        question: "Another table with an intriguing painting resting upon it. The painting depicts a clandestine gathering of '11' cloaked figures arranged in a circle, surrounded by arcane symbols and lit candles. Their faces are obscured, and they seem to be engaged in an esoteric ritual, raising their hands in unison as if channeling energy. The overall tone of the painting is eerie and enigmatic. You notice a small inscription discreetly tucked in the corner. What will you do?",
+        question: "Another table with an intriguing painting resting upon it. The painting depicts a clandestine gathering of '13' cloaked figures arranged in a circle, surrounded by arcane symbols and lit candles. Their faces are obscured, and they seem to be engaged in an esoteric ritual, raising their hands in unison as if channeling energy. The overall tone of the painting is eerie and enigmatic. You notice a small inscription discreetly tucked in the corner. What will you do?",
         
         options: [
             {

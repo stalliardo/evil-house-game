@@ -29,5 +29,27 @@ export const FOYER_TEXT = {
     PAINTING_EARTH_ELEMENTAL_CLUE: {
         title: "",
         body: "Amidst the four elements, one holds the power to unlock the way. Seek the gentle embrace of the earth, where roots intertwine with the soil and life flourishes. There, the first elemental artifact shall reveal itself. Look closely to the cult's mysterious ritual; count the hands that reach towards the unseen realm, for the sacred page of secrets lies in the number you find."
-    }
+    },
+    BOOKSHELF_BOOK_TITLES: [
+        "Secrets of the Arcane",
+        "Whispers of the Shadows",
+        "Chronicles of the Forgotten Realm",
+        "The Alchemist's Journal",
+        "Enigma of the Ancient Tomes",
+        "Grimoire of Elemental Magic",
+        "Legends of the Enchanted Forest",
+        "The Lost Prophecies",
+        "Mystic Arts and Beyond",
+        "Tales of the Astral Traveler",
+        "The Hidden Codex",
+        "Shadows in the Moonlight",
+        "Earth's Enchantment",
+        "Wonders of the Celestial Realm",
+        "Spells of the Elders",
+        "The Cursed Manuscript",
+        "Ancient Riddles and Puzzles",
+        "The Book of Eternal Wisdom",
+        "Chronicles of the Star Seekers",
+        "Legends of the Mystic Isles",
+    ]
 }

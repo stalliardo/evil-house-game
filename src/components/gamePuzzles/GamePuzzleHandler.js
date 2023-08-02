@@ -22,7 +22,7 @@ const GamePuzzleHandler = () => {
 
 
   return (
-    <div>
+    <div className={styles.container}>
       {getPuzzleComponent()}
       <button onClick={() =>  dispatch(setPuzzleInProgress(false))}>Close</button>
     </div>

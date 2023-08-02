@@ -129,12 +129,12 @@ const GameDataDisplay = ({ ...props }) => {
                         </div>
                     } */}
                     {showGamePuzzleHandler &&
-                        <div style={{ marginRight: "20px", width: "50%" }}>
+                        <div style={{ marginRight: "20px", width: "100%" }}>
                             <GamePuzzleHandler boundaryInstance={boundaryInstance} closeInventory={props.closeInventory} />
                         </div>
                     }
 
-                    <div style={{ marginRight: "20px", width: showInventory || showGamePuzzleHandler  ? "40%" : "100%" }}>
+                    <div style={{ marginRight: "20px", width: showInventory || showGamePuzzleHandler  ? "0%" : "100%" }}>
 
                         {showGameDataDisplay &&
                             !showGamePuzzleHandler &&
